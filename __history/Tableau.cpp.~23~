@@ -1,0 +1,51 @@
+//---------------------------------------------------------------------------
+
+#pragma hdrstop
+
+#include "Tableau.h"
+//---------------------------------------------------------------------------
+#pragma package(smart_init)
+//---------------------------------------------------------------------------
+
+Tableau::Tableau(int n, int x, int y, TForm* parentForm)
+	: Stack(n, x, y, parentForm) {
+}
+//---------------------------------------------------------------------------
+
+void  Tableau::SetTopCardYPos() {
+	topCardYPosition = cards.size()*10 + Y + 1;
+}
+//---------------------------------------------------------------------------
+
+void Tableau::AddCard(Card* card) {
+	int cardValue = card->GetValue();
+	int backCardValue = cards.back()->GetValue();
+	if (backCardValue%4==0 && (backCardValue-cardValue==6 || backCardValue-cardValue==7)) {
+		cards.push_back(card);
+        SetTopCardYPos();
+	}
+	else if (backCardValue%4==3 && (backCardValue-cardValue==5 || backCardValue-cardValue==6)) {
+		cards.push_back(card);
+		SetTopCardYPos();
+	}
+	else if (backCardValue%4==2 && (backCardValue-cardValue==2 || backCardValue-cardValue==3)) {
+		cards.push_back(card);
+		SetTopCardYPos();
+	}
+	else if (backCardValue%4==1 && (backCardValue-cardValue==1 || backCardValue-cardValue==2)) {
+		cards.push_back(card);
+		SetTopCardYPos();
+	}
+}
+//---------------------------------------------------------------------------
+
+void Tableau::AddCardsAtStart(Card* card){
+	SetTopCardYPos();
+	cards.push_back(card);
+}
+//---------------------------------------------------------------------------
+
+void Tableau::RemoveCard() {
+	cards.pop_back();
+}
+//---------------------------------------------------------------------------

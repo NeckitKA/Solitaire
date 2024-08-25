@@ -1,0 +1,40 @@
+//---------------------------------------------------------------------------
+
+#pragma hdrstop
+
+#include "Stock.h"
+#include "Unit1.h"
+//---------------------------------------------------------------------------
+#pragma package(smart_init)
+//---------------------------------------------------------------------------
+
+Stock::Stock(int n, int x, int y, TForm* parentForm)
+	: Stack(n, x, y, parentForm) {
+	SetParentForm(parentForm);
+}
+//---------------------------------------------------------------------------
+
+void Stock::SetParentForm(TForm* form) {
+	parentForm = form;
+}
+//---------------------------------------------------------------------------
+
+TForm* Stock::GetParentForm() const {
+	return parentForm;
+}
+
+void Stock::AddCard(Card* card) {
+	cards.push_back(card);
+}
+//---------------------------------------------------------------------------
+
+void Stock::RemoveCard() {
+	cards.pop_back();
+}
+//---------------------------------------------------------------------------
+
+void __fastcall Stock::OnMouseDown(TObject *Sender, TMouseButton Button, TShiftState Shift,
+		  int X, int Y) {
+    stack->Picture->LoadFromFile("resources/images/deck/card_back.png")
+}
+//---------------------------------------------------------------------------
