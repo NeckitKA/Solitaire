@@ -36,7 +36,7 @@ void Stock::RemoveCard() {
 
 void __fastcall Stock::OnMouseDown(TObject *Sender, TMouseButton Button, TShiftState Shift,
 		  int X, int Y) {
-	if (GetTImage() && Button == mbLeft) {
+	if (GetTImage() && Button == mbLeft && cards.size()==0) {
 		TForm1* mainForm = dynamic_cast<TForm1*>(GetParentForm());
 		int numOfCards  = mainForm->waste->cards.size();
 		for (int cardNumber = numOfCards - 1; cardNumber >= 0; --cardNumber) {

@@ -13,20 +13,31 @@ Tableau::Tableau(int n, int x, int y, TForm* parentForm)
 //---------------------------------------------------------------------------
 
 void  Tableau::SetTopCardYPos() {
-	topCardYPosition = cards.size()*10 + Y + 1;
+		int cardOpenCounter=0;
+		for (int cardNum = cards.size() - 1; cardNum >= 0; --cardNum) {
+			if (!cards[cardNum]->GetCardOpen()) {
+				break;
+			}
+			cardOpenCounter++;
+		}
+		topCardYPosition = cards.size()*7 + Y + 1 + 23*cardOpenCounter;
+}
+//---------------------------------------------------------------------------
+
+void  Tableau::SetTopCardYPosAtStart() {
+	topCardYPosition = cards.size()*7 + Y + 1;
 }
 //---------------------------------------------------------------------------
 
 void Tableau::AddCard(Card* card) {
-    SetTopCardYPos();
+	SetTopCardYPos();
 	cards.push_back(card);
-
 }
 //---------------------------------------------------------------------------
 
 void Tableau::AddCardsAtStart(Card* card){
 	cards.push_back(card);
-	SetTopCardYPos();
+	SetTopCardYPosAtStart();
 }
 //---------------------------------------------------------------------------
 

@@ -51,6 +51,11 @@ int Card::GetY() const{
 }
 //---------------------------------------------------------------------------
 
+int Card::GetTop() const{
+	return top;
+}
+//---------------------------------------------------------------------------
+
 int Card::GetStartX() const{
 	return startX;
 }
@@ -91,8 +96,13 @@ TForm* Card::GetParentForm() const {
 }
 //---------------------------------------------------------------------------
 
+int Card::GetCardNumInStack() const {
+	return cardNumInStack;
+}
+
 void Card::SetParentStack(Stack* stack) {
 	parentStack = stack;
+	SetCardNumInStack(stack->cards.size());
 	SetStartX(stack->GetTopCardXPosition());
 	SetStartY(stack->GetTopCardYPosition());
 	SetX(stack->GetTopCardXPosition());
@@ -117,6 +127,7 @@ void Card::SetY(int y) {
 	if (card) {
 		Y = y + (card->Height-2)/2;
 		card->Top = y;
+		SetTop(y);
 	}
 }
 //---------------------------------------------------------------------------
@@ -132,6 +143,11 @@ void Card::SetStartY(int y) {
 	if (card) {
 		startY = y;
 	}
+}
+//---------------------------------------------------------------------------
+
+void Card::SetTop(int y) {
+	top = y;
 }
 //---------------------------------------------------------------------------
 
@@ -173,17 +189,8 @@ void Card::SetNewParentStackNum(int stackNum) {
 }
 //---------------------------------------------------------------------------
 
-void Card::Show() {
-	if (card) {
-		card->Visible = true;
-	}
-}
-//---------------------------------------------------------------------------
-
-void Card::Hide() {
-	if (card) {
-		card->Visible = false;
-    }
+void Card::SetCardNumInStack(int cardNum){
+	cardNumInStack = cardNum;
 }
 //---------------------------------------------------------------------------
 
@@ -197,22 +204,37 @@ void Card::BringToFront(){
 void __fastcall Card::OnMouseDown(TObject *Sender, TMouseButton Button, TShiftState Shift,
 		  int X, int Y) {
 	if (card && Button == mbLeft) {
-		TForm1* mainForm = dynamic_cast<TForm1*>(GetParentForm());
-		if (mainForm && mainForm->GetStockStack() == GetParentStack()) {
+		TForm1* form = dynamic_cast<TForm1*>(GetParentForm());
+		if (form && form->GetStockStack() == GetParentStack()) {
 			SetCardOpen(true);
 			SetCardPicture(GetValue(),GetCardOpen());
-			SetParentStack(mainForm->waste);
+			SetParentStack(form->waste);
 			BringToFront();
-			mainForm->waste->AddCard(this);
-			mainForm->stock->RemoveCard();
+			form->waste->AddCard(this);
+			form->stock->RemoveCard();
 		}
+
 		else {
+
 			if (GetCardOpen()) {
-				SetCardPicture(value,cardOpen);
-				SetX(card->Left + X - (card->Width-2)/2);
+                SetX(card->Left + X - (card->Width-2)/2);
 				SetY(card->Top + Y - (card->Height-2)/2);
 				SetCardDragging(true);
 				BringToFront();
+
+				if (6<=GetParentStack()->GetStackNumber() &&
+					GetValue()!=GetParentStack()->cards.back()->GetValue()) {
+					Tableau* tableau = form->tableauStacks[GetParentStack()->GetStackNumber()-6];
+
+					if (GetCardNumInStack()!=(tableau->cards.size()-1)) {
+						for (int cardNum = GetCardNumInStack()+1; cardNum < tableau->cards.size(); ++cardNum) {
+							tableau->cards[cardNum]->SetX(GetX()-(card->Width-2)/2);
+							tableau->cards[cardNum]->SetY(GetY()+24*(tableau->cards[cardNum]->GetCardNumInStack()-GetCardNumInStack()));
+							tableau->cards[cardNum]->SetCardDragging(true);
+							tableau->cards[cardNum]->BringToFront();
+						}
+					}
+				}
 			}
 		}
 	}
@@ -221,79 +243,112 @@ void __fastcall Card::OnMouseDown(TObject *Sender, TMouseButton Button, TShiftSt
 
 void __fastcall Card::OnMouseUp(TObject *Sender, TMouseButton Button, TShiftState Shift,
 		  int X, int Y) {
-	if (card && Button == mbLeft && GetCardOpen()) {      //SetCardPicture(value,cardOpen); возможно не лишняя
+    TForm1* form = dynamic_cast<TForm1*>(GetParentForm());
+	for (int foundationNum = 2; foundationNum < 6; ++foundationNum) {
+
+		int foundationTopCardXPos = form->foundationStacks[foundationNum-2]->GetTopCardXPosition();
+		int foundationTopCardYPos = form->foundationStacks[foundationNum-2]->GetTopCardYPosition();
+
+		if ((foundationTopCardXPos!=GetParentStack()->GetTopCardXPosition() ||      //бредик
+		  foundationTopCardYPos!=GetParentStack()->GetTopCardYPosition()) &&
+		  (GetX()>=(foundationTopCardXPos+2) && GetX()<=(foundationTopCardXPos+100) &&
+		  GetY()>=(foundationTopCardYPos+2) && GetY()<=(foundationTopCardYPos+144))) {
+
+			SetNewParentStackNum(foundationNum);
+			SetCardInStackArea(true);
+			break;
+		}
+	}
+
+	for (int tableauNum = 6; tableauNum < 13; ++tableauNum) {
+
+		int tableauTopCardXPos = form->tableauStacks[tableauNum-6]->GetTopCardXPosition();
+		int tableauTopCardYPos1 = form->tableauStacks[tableauNum-6]->GetTopCardYPosition();
+		int tableauTopCardYPos2 = form->tableauStacks[tableauNum-6]->cards.back()->GetTop();
+
+		if (GetParentStack()->GetStackNumber()!=form->tableauStacks[tableauNum-6]->GetStackNumber() &&     //бредик
+		  ((GetX()>=(tableauTopCardXPos+2) && GetX()<=(tableauTopCardXPos+100)) &&
+		  ((GetY()>=(tableauTopCardYPos1+1) && GetY()<=(tableauTopCardYPos1+143)) ||
+		  (GetY()>=(tableauTopCardYPos2+1) && GetY()<=(tableauTopCardYPos2+143))))) {
+
+			SetNewParentStackNum(tableauNum);
+			SetCardInStackArea(true);
+			break;
+		}
+	}
+	if (card && Button == mbLeft && GetCardOpen()) {
+
 		if (GetCardInStackArea()) {
-			TForm1* mainForm = dynamic_cast<TForm1*>(GetParentForm());
+
 
 			if (2<=GetNewParentStackNum() && GetNewParentStackNum()<=5) {
 
-				if (mainForm->foundationStacks[GetNewParentStackNum()-2]->cards.size()==0) {
+				if (form->foundationStacks[GetNewParentStackNum()-2]->cards.size()==0) {
 
 					if (GetValue()<5) {
-
-						mainForm->foundationStacks[GetNewParentStackNum()-2]->AddCard(this);
+						form->foundationStacks[GetNewParentStackNum()-2]->AddCard(this);
 
 						if (2<=GetParentStack()->GetStackNumber() && GetParentStack()->GetStackNumber()<=5){
-
-							Foundation* oldParentStack = dynamic_cast<Foundation*>(GetParentStack());
-							oldParentStack->RemoveCard();
+							Foundation* oldStack = dynamic_cast<Foundation*>(GetParentStack());
+							oldStack->RemoveCard();
 						}
 
 						else if (6<=GetParentStack()->GetStackNumber()){
+							Tableau* oldStack = dynamic_cast<Tableau*>(GetParentStack());
+							oldStack->RemoveCard();
+							oldStack->SetTopCardYPosition();
 
-							Tableau* oldParentStack = dynamic_cast<Tableau*>(GetParentStack());
-							oldParentStack->RemoveCard();
-
-							if (oldParentStack->cards.size()!=0) {
-
-								oldParentStack->cards.back()->SetCardOpen(true);
-								oldParentStack->cards.back()->SetCardPicture(oldParentStack->cards.back()->GetValue(),GetCardOpen());
+							if (oldStack->cards.size()!=0) {
+								oldStack->cards.back()->SetCardOpen(true);
+								oldStack->cards.back()->SetCardPicture(oldStack->cards.back()->GetValue(),GetCardOpen());
 							}
 						}
 
 						else {
-
-							Waste* oldParentStack = dynamic_cast<Waste*>(GetParentStack());
-
-							for (int cardNum = 0; cardNum < oldParentStack->cards.size(); ++cardNum) {
-
-								if (GetValue() == oldParentStack->cards[cardNum]->GetValue()) {
-									oldParentStack->RemoveCard(cardNum);
+							Waste* oldStack = dynamic_cast<Waste*>(GetParentStack());
+							for (int cardNum = 0; cardNum < oldStack->cards.size(); ++cardNum) {
+								if (GetValue() == oldStack->cards[cardNum]->GetValue()) {
+									oldStack->RemoveCard(cardNum);
 								}
 							}
 						}
 
-						SetParentStack(mainForm->foundationStacks[GetNewParentStackNum()-2]);
+						SetParentStack(form->foundationStacks[GetNewParentStackNum()-2]);
 						BringToFront();
 						SetCardInStackArea(false);
 					}
 				}
 
 				else {
-					if ((mainForm->foundationStacks[GetNewParentStackNum()-2]->cards.back()->GetValue() + 4) == GetValue()) {
-						mainForm->foundationStacks[GetNewParentStackNum()-2]->AddCard(this);
-						if (2<=GetParentStack()->GetStackNumber() && GetParentStack()->GetStackNumber()<=5){
-							Foundation* oldParentStack = dynamic_cast<Foundation*>(GetParentStack());
-							oldParentStack->RemoveCard();
-						}
-						else if (6<=GetParentStack()->GetStackNumber()){
-							Tableau* oldParentStack = dynamic_cast<Tableau*>(GetParentStack());
-							oldParentStack->RemoveCard();
-                            if (oldParentStack->cards.size()!=0) {
+					if ((form->foundationStacks[GetNewParentStackNum()-2]->cards.back()->GetValue() + 4) == GetValue()) {
+						form->foundationStacks[GetNewParentStackNum()-2]->AddCard(this);
 
-								oldParentStack->cards.back()->SetCardOpen(true);
-								oldParentStack->cards.back()->SetCardPicture(oldParentStack->cards.back()->GetValue(),GetCardOpen());
+						if (2<=GetParentStack()->GetStackNumber() && GetParentStack()->GetStackNumber()<=5){
+							Foundation* oldStack = dynamic_cast<Foundation*>(GetParentStack());
+							oldStack->RemoveCard();
+						}
+
+						else if (6<=GetParentStack()->GetStackNumber()){
+							Tableau* oldStack = dynamic_cast<Tableau*>(GetParentStack());
+							oldStack->RemoveCard();
+							oldStack->SetTopCardYPosition();
+							if (oldStack->cards.size()!=0) {
+
+								oldStack->cards.back()->SetCardOpen(true);
+								oldStack->cards.back()->SetCardPicture(oldStack->cards.back()->GetValue(),GetCardOpen());
 							}
 						}
+
 						else {
-							Waste* oldParentStack = dynamic_cast<Waste*>(GetParentStack());
-							for (int cardNum = 0; cardNum < oldParentStack->cards.size(); ++cardNum) {
-								if (GetValue() == oldParentStack->cards[cardNum]->GetValue()) {
-									oldParentStack->RemoveCard(cardNum);
+							Waste* oldStack = dynamic_cast<Waste*>(GetParentStack());
+							for (int cardNum = 0; cardNum < oldStack->cards.size(); ++cardNum) {
+								if (GetValue() == oldStack->cards[cardNum]->GetValue()) {
+									oldStack->RemoveCard(cardNum);
 								}
 							}
 						}
-						SetParentStack(mainForm->foundationStacks[GetNewParentStackNum()-2]);
+
+						SetParentStack(form->foundationStacks[GetNewParentStackNum()-2]);
 						BringToFront();
 						SetCardInStackArea(false);
 					}
@@ -301,83 +356,79 @@ void __fastcall Card::OnMouseUp(TObject *Sender, TMouseButton Button, TShiftStat
 			}
 
 			else  {
-				if (mainForm->tableauStacks[GetNewParentStackNum()-6]->cards.size()==0) {
+				if (form->tableauStacks[GetNewParentStackNum()-6]->cards.size()==0 && 49<=GetValue()) {
+					form->tableauStacks[GetNewParentStackNum()-6]->AddCard(this);
 
-					if (49<=GetValue()) {
-
-						mainForm->tableauStacks[GetNewParentStackNum()-6]->AddCard(this);
-
-						if (2<=GetParentStack()->GetStackNumber() && GetParentStack()->GetStackNumber()<=5){
-
-							Foundation* oldParentStack = dynamic_cast<Foundation*>(GetParentStack());
-							oldParentStack->RemoveCard();
-						}
-
-						else if (6<=GetParentStack()->GetStackNumber()){
-
-							Tableau* oldParentStack = dynamic_cast<Tableau*>(GetParentStack());
-							oldParentStack->RemoveCard();
-
-							if (oldParentStack->cards.size()!=0) {
-
-								oldParentStack->cards.back()->SetCardOpen(true);
-								oldParentStack->cards.back()->SetCardPicture(oldParentStack->cards.back()->GetValue(),GetCardOpen());
-							}
-						}
-
-						else {
-
-							Waste* oldParentStack = dynamic_cast<Waste*>(GetParentStack());
-
-							for (int cardNum = 0; cardNum < oldParentStack->cards.size(); ++cardNum) {
-
-								if (GetValue() == oldParentStack->cards[cardNum]->GetValue()) {
-									oldParentStack->RemoveCard(cardNum);
-								}
-							}
-						}
-
-						SetParentStack(mainForm->tableauStacks[GetNewParentStackNum()-6]);
-						BringToFront();
-						SetCardInStackArea(false);
+					if (2<=GetParentStack()->GetStackNumber() && GetParentStack()->GetStackNumber()<=5){
+						Foundation* oldStack = dynamic_cast<Foundation*>(GetParentStack());
+						oldStack->RemoveCard();
 					}
+
+					else if (6<=GetParentStack()->GetStackNumber()){
+						Tableau* oldStack = dynamic_cast<Tableau*>(GetParentStack());
+						oldStack->RemoveCard();
+						oldStack->SetTopCardYPosition();
+
+						if (oldStack->cards.size()!=0) {
+							oldStack->cards.back()->SetCardOpen(true);
+							oldStack->cards.back()->SetCardPicture(oldStack->cards.back()->GetValue(),GetCardOpen());
+						}
+					}
+
+					else {
+						Waste* oldStack = dynamic_cast<Waste*>(GetParentStack());
+						for (int cardNum = 0; cardNum < oldStack->cards.size(); ++cardNum) {
+							if (GetValue() == oldStack->cards[cardNum]->GetValue()) {
+								oldStack->RemoveCard(cardNum);
+							}
+						}
+					}
+
+					SetParentStack(form->tableauStacks[GetNewParentStackNum()-6]);
+					BringToFront();
+					SetCardInStackArea(false);
 				}
 
 				else {
-					int backCardValue = mainForm->tableauStacks[GetNewParentStackNum()-6]->cards.back()->GetValue();
-					if ((backCardValue%4==0 && (backCardValue-GetValue()==6 || backCardValue-GetValue()==7)) ||
-						(backCardValue%4==3 && (backCardValue-GetValue()==5 || backCardValue-GetValue()==6)) ||
-						(backCardValue%4==2 && (backCardValue-GetValue()==2 || backCardValue-GetValue()==3)) ||
-						(backCardValue%4==1 && (backCardValue-GetValue()==1 || backCardValue-GetValue()==2))) {
+					int backCardValue = form->tableauStacks[GetNewParentStackNum()-6]->cards.back()->GetValue();
+					int valueDifference = backCardValue-GetValue();
+					if ((backCardValue%4==0 && (valueDifference==6 || valueDifference==7)) ||
+					  (backCardValue%4==3 && (valueDifference==5 || valueDifference==6)) ||
+					  (backCardValue%4==2 && (valueDifference==2 || valueDifference==3)) ||
+					  (backCardValue%4==1 && (valueDifference==1 || valueDifference==2))) {
 
-						mainForm->tableauStacks[GetNewParentStackNum()-6]->AddCard(this);
+						form->tableauStacks[GetNewParentStackNum()-6]->AddCard(this);
+
 						if (2<=GetParentStack()->GetStackNumber() && GetParentStack()->GetStackNumber()<=5){
-							Foundation* oldParentStack = dynamic_cast<Foundation*>(GetParentStack());
-							oldParentStack->RemoveCard();
+							Foundation* oldStack = dynamic_cast<Foundation*>(GetParentStack());
+							oldStack->RemoveCard();
 						}
+
 						else if (6<=GetParentStack()->GetStackNumber()){
-							Tableau* oldParentStack = dynamic_cast<Tableau*>(GetParentStack());
-							oldParentStack->RemoveCard();
-                            if (oldParentStack->cards.size()!=0) {
-								oldParentStack->cards.back()->SetCardOpen(true);
-								oldParentStack->cards.back()->SetCardPicture(oldParentStack->cards.back()->GetValue(),GetCardOpen());
+							Tableau* oldStack = dynamic_cast<Tableau*>(GetParentStack());
+							oldStack->RemoveCard();
+							if (oldStack->cards.size()!=0) {
+								oldStack->cards.back()->SetCardOpen(true);
+								oldStack->cards.back()->SetCardPicture(oldStack->cards.back()->GetValue(),GetCardOpen());
 							}
 						}
+
 						else {
-							Waste* oldParentStack = dynamic_cast<Waste*>(GetParentStack());
-							for (int cardNum = 0; cardNum < oldParentStack->cards.size(); ++cardNum) {
-								if (GetValue() == oldParentStack->cards[cardNum]->GetValue()) {
-									oldParentStack->RemoveCard(cardNum);
+							Waste* oldStack = dynamic_cast<Waste*>(GetParentStack());
+							for (int cardNum = 0; cardNum < oldStack->cards.size(); ++cardNum) {
+								if (GetValue() == oldStack->cards[cardNum]->GetValue()) {
+									oldStack->RemoveCard(cardNum);
 								}
 							}
 						}
-						SetParentStack(mainForm->tableauStacks[GetNewParentStackNum()-6]);
+						SetParentStack(form->tableauStacks[GetNewParentStackNum()-6]);
 						BringToFront();
 						SetCardInStackArea(false);
 					}
 				}
 			}
 		}
+
 		SetX(GetStartX());
 		SetY(GetStartY());
 		SetCardDragging(false);
@@ -389,41 +440,22 @@ void __fastcall Card::OnMouseMove(TObject *Sender, TShiftState Shift, int X, int
 	if (GetCardDragging()) {
 		SetX(card->Left + (X - (card->Width-2)/2));
 		SetY(card->Top + (Y - (card->Height-2)/2));
-		TForm1* mainForm = dynamic_cast<TForm1*>(GetParentForm());
-		for (int foundationStackNum = 2; foundationStackNum < 6; ++foundationStackNum) {
+		TForm1* form = dynamic_cast<TForm1*>(GetParentForm());
 
-			int foundationStackTopCardXPos = mainForm->foundationStacks[foundationStackNum-2]->GetTopCardXPosition();
-			int foundationStackTopCardYPos = mainForm->foundationStacks[foundationStackNum-2]->GetTopCardYPosition();
+		if (6<=GetParentStack()->GetStackNumber() && GetValue()!=GetParentStack()->cards.back()->GetValue()) {
 
-			if (foundationStackTopCardXPos!=GetParentStack()->GetTopCardXPosition() ||
-				foundationStackTopCardYPos!=GetParentStack()->GetTopCardYPosition()) {
-
-				if (GetX()>=foundationStackTopCardXPos && GetX()<=(foundationStackTopCardXPos+102) &&
-						GetY()>=foundationStackTopCardYPos && GetY()<=(foundationStackTopCardYPos+146)) {
-
-					SetNewParentStackNum(foundationStackNum);
-					SetCardInStackArea(true);
-					break;
+			Tableau* tableau = form->tableauStacks[GetParentStack()->GetStackNumber()-6];
+			if (GetCardNumInStack()!=(tableau->cards.size()-1)) {
+				for (int cardNum = GetCardNumInStack()+1; cardNum < tableau->cards.size(); ++cardNum) {
+					tableau->cards[cardNum]->SetX(GetX()-(card->Width-2)/2);
+					tableau->cards[cardNum]->SetY(GetY()+24*(tableau->cards[cardNum]->GetCardNumInStack()-GetCardNumInStack()));
+					tableau->cards[cardNum]->SetCardDragging(true);
+					tableau->cards[cardNum]->BringToFront();
 				}
 			}
 		}
-		for (int tableauStackNum = 6; tableauStackNum < 13; ++tableauStackNum) {
+		//то что ниже не должно определяться здесь
 
-			int tableauStackTopCardXPos = mainForm->tableauStacks[tableauStackNum-6]->GetTopCardXPosition();
-			int tableauStackTopCardYPos = mainForm->tableauStacks[tableauStackNum-6]->GetTopCardYPosition();
-
-			if (tableauStackTopCardXPos!=GetParentStack()->GetTopCardXPosition() ||
-				tableauStackTopCardYPos!=GetParentStack()->GetTopCardYPosition()) {
-
-				if (GetX()>=tableauStackTopCardXPos && GetX()<=(tableauStackTopCardXPos+102) &&
-						GetY()>=tableauStackTopCardYPos && GetY()<=(tableauStackTopCardYPos+146)) {
-
-					SetNewParentStackNum(tableauStackNum);
-					SetCardInStackArea(true);
-                    break;
-				}
-			}
-		}
 	}
 }
 //---------------------------------------------------------------------------

@@ -84,14 +84,15 @@ private:	// User declarations
 	void RegisterOrOpenStatistics (bool N10Enabled,  TForm* Form3, TForm* Form4);
 
 	void AddStacksAndCards(){
-        stock = new Stock(0,130,51,this);
-		waste = new Waste(1,281,51,this);
-		for (int stackNum = 0; stackNum < 4; ++stackNum) {   //4?
-			foundationStacks.push_back(new Foundation(stackNum+2,583+151*stackNum,51,this));
-		}
 
+
+		stock = new Stock(0,130,5,this);
+		waste = new Waste(1,281,5,this);
+		for (int stackNum = 0; stackNum < 4; ++stackNum) {   //4?
+			foundationStacks.push_back(new Foundation(stackNum+2,583+151*stackNum,5,this));
+		}
 		for (int stackNum = 0; stackNum < 7; ++stackNum) {     //7?
-			tableauStacks.push_back(new Tableau (stackNum+6,130+151*stackNum,248,this));
+			tableauStacks.push_back(new Tableau (stackNum+6,130+151*stackNum,160,this));
 		}
 		std::vector<int> cardValues;
         for (int i = 0; i < 52; ++i) {
@@ -106,7 +107,7 @@ private:	// User declarations
 			for (int numOfCards = 0; numOfCards < stackNum+1; numOfCards++) {
 				if (numOfCards != stackNum) {
 					tableauStacks[stackNum]->AddCardsAtStart(new Card(cardValues[cardCounter++],
-						false,tableauStacks[stackNum],this));
+						false,tableauStacks[stackNum],this)); //false
 				}
 				else{
 					tableauStacks[stackNum]->AddCardsAtStart(new Card(cardValues[cardCounter++],
