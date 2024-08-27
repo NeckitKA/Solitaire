@@ -95,14 +95,14 @@ private:	// User declarations
 			tableauStacks.push_back(new Tableau (stackNum+6,130+151*stackNum,160,this));
 		}
 		std::vector<int> cardValues;
-        for (int i = 0; i < 52; ++i) {
+		for (int i = 0; i < 52; ++i) {
 			cardValues.push_back(i+1);
 		}
-        std::random_device rd;
+		std::random_device rd;
 		std::mt19937 g(static_cast<unsigned>(std::chrono::system_clock::now().time_since_epoch().count()));
 		std::shuffle(cardValues.begin(), cardValues.end(), g);
-
 		int cardCounter = 0;
+
 		for (int stackNum = 0; stackNum < 7; ++stackNum) {
 			for (int numOfCards = 0; numOfCards < stackNum+1; numOfCards++) {
 				if (numOfCards != stackNum) {
@@ -115,16 +115,17 @@ private:	// User declarations
 				}
 			}
 		}
-        for (int carNum = cardCounter; carNum < cardValues.size(); ++carNum) {
+
+		for (int carNum = cardCounter; carNum < cardValues.size(); ++carNum) {
 			stock->AddCard(new Card(cardValues[cardCounter++],
 				false,stock,this));
 		}
 	}
 
 	void ChangeCardStack(Card* card, Stack* newStack) {
-    if (card && newStack) {
+		if (card && newStack) {
 
-	}
+		}
     }
 
 	void DeleteStacksAndCards(){

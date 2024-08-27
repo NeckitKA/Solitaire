@@ -15,7 +15,6 @@ Foundation::Foundation(int n, int x, int y, TForm* parentForm)
 
 void Foundation::AddCard(Card* card) {
 	cards.push_back(card);
-	
 }
 //---------------------------------------------------------------------------
 

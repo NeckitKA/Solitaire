@@ -11,6 +11,6 @@ object Form2: TForm2
   Font.Height = -12
   Font.Name = 'Segoe UI'
   Font.Style = []
-  Position = poDesigned
+  Position = poMainFormCenter
   TextHeight = 15
 end

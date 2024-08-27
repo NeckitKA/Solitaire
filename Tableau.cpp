@@ -30,8 +30,8 @@ void  Tableau::SetTopCardYPosAtStart() {
 //---------------------------------------------------------------------------
 
 void Tableau::AddCard(Card* card) {
-	SetTopCardYPos();
 	cards.push_back(card);
+	SetTopCardYPos();
 }
 //---------------------------------------------------------------------------
 
@@ -43,5 +43,6 @@ void Tableau::AddCardsAtStart(Card* card){
 
 void Tableau::RemoveCard() {
 	cards.pop_back();
+    SetTopCardYPos();
 }
 //---------------------------------------------------------------------------

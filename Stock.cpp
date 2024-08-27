@@ -37,17 +37,17 @@ void Stock::RemoveCard() {
 void __fastcall Stock::OnMouseDown(TObject *Sender, TMouseButton Button, TShiftState Shift,
 		  int X, int Y) {
 	if (GetTImage() && Button == mbLeft && cards.size()==0) {
-		TForm1* mainForm = dynamic_cast<TForm1*>(GetParentForm());
-		int numOfCards  = mainForm->waste->cards.size();
-		for (int cardNumber = numOfCards - 1; cardNumber >= 0; --cardNumber) {
-			mainForm->waste->cards[cardNumber]->SetCardOpen(false);
-			mainForm->waste->cards[cardNumber]->
-				SetCardPicture(mainForm->waste->cards[cardNumber]->GetValue(),
-					mainForm->waste->cards[cardNumber]->GetCardOpen());
-			mainForm->waste->cards[cardNumber]->SetParentStack(mainForm->stock);
-			mainForm->waste->cards[cardNumber]->BringToFront();
-			AddCard(mainForm->waste->cards[cardNumber]);
-			mainForm->waste->RemoveCard(cardNumber);
+		TForm1* form = dynamic_cast<TForm1*>(GetParentForm());
+		int numOfCards  = form->waste->cards.size();
+		for (int cardNum = numOfCards - 1; cardNum >= 0; --cardNum) {
+			form->waste->cards[cardNum]->SetCardOpen(false);
+			form->waste->cards[cardNum]->
+				SetCardPicture(form->waste->cards[cardNum]->GetValue(),
+					form->waste->cards[cardNum]->GetCardOpen());
+			form->waste->cards[cardNum]->SetParentStack(form->stock);
+			form->waste->cards[cardNum]->BringToFront();
+			AddCard(form->waste->cards[cardNum]);
+			form->waste->RemoveCard(cardNum);
 		}
 	}
 }

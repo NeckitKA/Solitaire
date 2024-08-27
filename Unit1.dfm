@@ -3142,7 +3142,7 @@ object Form1: TForm1
     C3300CC3300CC3300CC3300CC3300CC3300CC3300CC3300CC330FE53C6FF07F9
     DF6688D553C9180000000049454E44AE426082}
   Menu = MainMenu1
-  Position = poDesigned
+  Position = poScreenCenter
   OnClose = FormClose
   TextHeight = 15
   object Image1: TImage

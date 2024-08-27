@@ -13,7 +13,7 @@ class Card{
 		TForm * parentForm;
 		TImage *card;
 		int value;
-		int X, Y;
+		int xPos, yPos;
         int top;
 		int startX, startY;
 		int newParentStackNum;
@@ -24,8 +24,7 @@ class Card{
 
 		int GetX() const;
 		int GetY() const;
-		int GetStartX() const;
-		int GetStartY() const;
+
 		int GetCardNumInStack() const;
 		int GetNewParentStackNum() const;
 		bool GetCardDragging() const;
@@ -50,6 +49,8 @@ class Card{
 
 		int GetValue() const;
 		int GetTop() const;
+        int GetStartX() const;
+		int GetStartY() const;
 		bool GetCardOpen() const;
 
         void SetX(int x);
