@@ -199,7 +199,7 @@ void TForm1::RegisterOrOpenStatistics (bool N10Enabled,  TForm* Form3, TForm* Fo
 //---------------------------------------------------------------------------
 
 void TForm1::Play(){
-	Timer1->Enabled=true;
+
 	Button1->Visible=false;
 	Button2->Visible=false;
 	Image3->Visible=true;
@@ -230,384 +230,403 @@ void __fastcall TForm1::FormMouseUp(TObject *Sender, TMouseButton Button, TShift
 		  int X, int Y)
 {
 	if (Button == mbRight) {
-		bool nÑMFW = false; //noÑardsMoveFromWaste
-		bool nÑMFT0 = false; //noÑardsMoveFromTableau0
-		bool nÑMFT1 = false;
-		bool nÑMFT2 = false;
-		bool nÑMFT3 = false;
-		bool nÑMFT4 = false;
-		bool nÑMFT5 = false;
-		bool nÑMFT6 = false;
-		while (!nÑMFW && !nÑMFT0 && !nÑMFT1 && !nÑMFT2 && !nÑMFT3 && !nÑMFT4 && !nÑMFT5 && !nÑMFT6) {
+        ChangeCardsStacksByRightClick();
+	}
+}
+//---------------------------------------------------------------------------
 
-			if (!waste->cards.empty()) {
-				while (!waste->cards.empty() && !nÑMFW) {
-					if ((!foundationStacks[0]->cards.empty() && (waste->cards.back()->GetValue()-4)==foundationStacks[0]->cards.back()->GetValue()) || ((waste->cards.back()->GetValue())<5 && foundationStacks[0]->cards.size()==0)) {
-						waste->cards.back()->SetParentStack(foundationStacks[0]);
-						foundationStacks[0]->AddCard(waste->cards.back());
-						waste->cards.back()->BringToFront();
-						waste->RemoveCard(waste->cards.size()-1);
-					}
+void TForm1::AddStacksAndCards(){
+	stock = new Stock(0,130,5,this);
+	waste = new Waste(1,281,5,this);
+	for (int stackNum = 0; stackNum < 4; ++stackNum) {
+		foundationStacks.push_back(new Foundation(stackNum+2,583+151*stackNum,5,this));
+	}
+	for (int stackNum = 0; stackNum < 7; ++stackNum) {
+		tableauStacks.push_back(new Tableau (stackNum+6,130+151*stackNum,160,this));
+	}
+	std::vector<int> cardValues;
+	for (int i = 0; i < 52; ++i) {
+		cardValues.push_back(i+1);
+	}
+	std::random_device rd;
+	std::mt19937 g(static_cast<unsigned>(std::chrono::system_clock::now().time_since_epoch().count()));
+	std::shuffle(cardValues.begin(), cardValues.end(), g);
+	int cardCounter = 0;
 
-					else if ((!foundationStacks[1]->cards.empty() && (waste->cards.back()->GetValue()-4)==foundationStacks[1]->cards.back()->GetValue()) || ((waste->cards.back()->GetValue())<5 && foundationStacks[1]->cards.size()==0)) {
-						waste->cards.back()->SetParentStack(foundationStacks[1]);
-						foundationStacks[1]->AddCard(waste->cards.back());
-						waste->cards.back()->BringToFront();
-						waste->RemoveCard(waste->cards.size()-1);
-					}
+	for (int stackNum = 0; stackNum < 7; ++stackNum) {
+		for (int numOfCards = 0; numOfCards < stackNum+1; numOfCards++) {
+			if (numOfCards != stackNum) {
+				tableauStacks[stackNum]->AddCardsAtStart(new Card(cardValues[cardCounter++],
+					false,tableauStacks[stackNum],this));
+			}
+			else{
+				tableauStacks[stackNum]->AddCardsAtStart(new Card(cardValues[cardCounter++],
+					true,tableauStacks[stackNum],this));
+			}
+		}
+	}
 
-					else if ((!foundationStacks[2]->cards.empty() && (waste->cards.back()->GetValue()-4)==foundationStacks[2]->cards.back()->GetValue()) || ((waste->cards.back()->GetValue())<5 && foundationStacks[2]->cards.size()==0)) {
-						waste->cards.back()->SetParentStack(foundationStacks[2]);
-						foundationStacks[2]->AddCard(waste->cards.back());
-						waste->cards.back()->BringToFront();
-						waste->RemoveCard(waste->cards.size()-1);
-					}
+    for (int carNum = cardCounter; carNum < cardValues.size(); ++carNum) {
+		stock->AddCard(new Card(cardValues[cardCounter++],
+			false,stock,this));
+	}
+}
+//---------------------------------------------------------------------------
 
-					else if ((!foundationStacks[3]->cards.empty() && (waste->cards.back()->GetValue()-4)==foundationStacks[3]->cards.back()->GetValue()) || ((waste->cards.back()->GetValue())<5 && foundationStacks[3]->cards.size()==0)) {
-						waste->cards.back()->SetParentStack(foundationStacks[3]);
-						foundationStacks[3]->AddCard(waste->cards.back());
-						waste->cards.back()->BringToFront();
-						waste->RemoveCard(waste->cards.size()-1);
-					}
-					else {
-						nÑMFW = true;
-					}
+void TForm1::DeleteStacksAndCards(){
+	delete stock;
+	delete waste;
+	for (int stackNum = 0; stackNum < 4; ++stackNum) {
+		delete foundationStacks[stackNum];
+	}
+	foundationStacks.clear();
+
+	for (int stackNum = 0; stackNum < 7; ++stackNum) {
+		delete tableauStacks[stackNum];
+	}
+	tableauStacks.clear();
+};
+//---------------------------------------------------------------------------
+
+void TForm1::ChangeCardsStacksByRightClick() {
+	bool nÑMFW = false; //noÑardsMoveFromWaste
+	bool nÑMFT0 = false; //noÑardsMoveFromTableau0
+	bool nÑMFT1 = false;
+	bool nÑMFT2 = false;
+	bool nÑMFT3 = false;
+	bool nÑMFT4 = false;
+	bool nÑMFT5 = false;
+	bool nÑMFT6 = false;
+	bool AVP = false;    //additional verification passed
+	int counter = 0;
+	while (!AVP) {
+
+
+		if (!waste->cards.empty()) {
+			while (!waste->cards.empty() && !nÑMFW) {
+				if ((!foundationStacks[0]->cards.empty() && (waste->cards.back()->GetValue()-4)==foundationStacks[0]->cards.back()->GetValue()) || ((waste->cards.back()->GetValue())<5 && foundationStacks[0]->cards.size()==0)) {
+					waste->cards.back()->SetParentStack(foundationStacks[0]);
+					foundationStacks[0]->AddCard(waste->cards.back());
+					waste->cards.back()->BringToFront();
+					waste->RemoveCard(waste->cards.size()-1);
+				}
+
+				else if ((!foundationStacks[1]->cards.empty() && (waste->cards.back()->GetValue()-4)==foundationStacks[1]->cards.back()->GetValue()) || ((waste->cards.back()->GetValue())<5 && foundationStacks[1]->cards.size()==0)) {
+					waste->cards.back()->SetParentStack(foundationStacks[1]);
+					foundationStacks[1]->AddCard(waste->cards.back());
+					waste->cards.back()->BringToFront();
+					waste->RemoveCard(waste->cards.size()-1);
+				}
+
+				else if ((!foundationStacks[2]->cards.empty() && (waste->cards.back()->GetValue()-4)==foundationStacks[2]->cards.back()->GetValue()) || ((waste->cards.back()->GetValue())<5 && foundationStacks[2]->cards.size()==0)) {
+					waste->cards.back()->SetParentStack(foundationStacks[2]);
+					foundationStacks[2]->AddCard(waste->cards.back());
+					waste->cards.back()->BringToFront();
+					waste->RemoveCard(waste->cards.size()-1);
+				}
+
+				else if ((!foundationStacks[3]->cards.empty() && (waste->cards.back()->GetValue()-4)==foundationStacks[3]->cards.back()->GetValue()) || ((waste->cards.back()->GetValue())<5 && foundationStacks[3]->cards.size()==0)) {
+					waste->cards.back()->SetParentStack(foundationStacks[3]);
+					foundationStacks[3]->AddCard(waste->cards.back());
+					waste->cards.back()->BringToFront();
+					waste->RemoveCard(waste->cards.size()-1);
+				}
+				else {
+					nÑMFW = true;
 				}
 			}
-			else {
-				nÑMFW = true;
-            }
+		}
+		else {
+			nÑMFW = true;
+		}
 
-			Tableau* tableau0 = dynamic_cast<Tableau*>(tableauStacks[0]);
-			Tableau* tableau1 = dynamic_cast<Tableau*>(tableauStacks[1]);
-			Tableau* tableau2 = dynamic_cast<Tableau*>(tableauStacks[2]);
-			Tableau* tableau3 = dynamic_cast<Tableau*>(tableauStacks[3]);
-			Tableau* tableau4 = dynamic_cast<Tableau*>(tableauStacks[4]);
-			Tableau* tableau5 = dynamic_cast<Tableau*>(tableauStacks[5]);
-			Tableau* tableau6 = dynamic_cast<Tableau*>(tableauStacks[6]);
+		Tableau* tableau0 = dynamic_cast<Tableau*>(tableauStacks[0]);
+		Tableau* tableau1 = dynamic_cast<Tableau*>(tableauStacks[1]);
+		Tableau* tableau2 = dynamic_cast<Tableau*>(tableauStacks[2]);
+		Tableau* tableau3 = dynamic_cast<Tableau*>(tableauStacks[3]);
+		Tableau* tableau4 = dynamic_cast<Tableau*>(tableauStacks[4]);
+		Tableau* tableau5 = dynamic_cast<Tableau*>(tableauStacks[5]);
+		Tableau* tableau6 = dynamic_cast<Tableau*>(tableauStacks[6]);
 
-			if (!tableau0->cards.empty()) {
-				while (!tableau0->cards.empty() && !nÑMFT0) {
-					if ((!foundationStacks[0]->cards.empty() && (tableau0->cards.back()->GetValue()-4)==foundationStacks[0]->cards.back()->GetValue()) || ((tableau0->cards.back()->GetValue())<5 && foundationStacks[0]->cards.size()==0)) {
-						tableau0->cards.back()->SetParentStack(foundationStacks[0]);
-						foundationStacks[0]->AddCard(tableau0->cards.back());
-						tableau0->cards.back()->BringToFront();
+		if (!tableau0->cards.empty()) {
+			while (!tableau0->cards.empty() && !nÑMFT0) {
+				if ((!foundationStacks[0]->cards.empty() && (tableau0->cards.back()->GetValue()-4)==foundationStacks[0]->cards.back()->GetValue()) || ((tableau0->cards.back()->GetValue())<5 && foundationStacks[0]->cards.size()==0)) {
+					tableau0->cards.back()->SetParentStack(foundationStacks[0]);
+					foundationStacks[0]->AddCard(tableau0->cards.back());
+				}
+
+				else if ((!foundationStacks[1]->cards.empty() && (tableau0->cards.back()->GetValue()-4)==foundationStacks[1]->cards.back()->GetValue()) || ((tableau0->cards.back()->GetValue())<5 && foundationStacks[1]->cards.size()==0)) {
+					tableau0->cards.back()->SetParentStack(foundationStacks[1]);
+					foundationStacks[1]->AddCard(tableau0->cards.back());
+				}
+
+				else if ((!foundationStacks[2]->cards.empty() && (tableau0->cards.back()->GetValue()-4)==foundationStacks[2]->cards.back()->GetValue()) || ((tableau0->cards.back()->GetValue())<5 && foundationStacks[2]->cards.size()==0)) {
+					tableau0->cards.back()->SetParentStack(foundationStacks[2]);
+					foundationStacks[2]->AddCard(tableau0->cards.back());
+				}
+
+				else if ((!foundationStacks[3]->cards.empty() && (tableau0->cards.back()->GetValue()-4)==foundationStacks[3]->cards.back()->GetValue()) || ((tableau0->cards.back()->GetValue())<5 && foundationStacks[3]->cards.size()==0)) {
+					tableau0->cards.back()->SetParentStack(foundationStacks[3]);
+					foundationStacks[3]->AddCard(tableau0->cards.back());
+				}
+				else {
+					nÑMFT0 = true;
+				}
+				if (!nÑMFT0) {
+					tableau0->cards.back()->BringToFront();
+					tableau0->RemoveCard();
+					if (!tableau0->cards.empty()) {
 						tableau0->cards.back()->SetCardOpen(true);
 						tableau0->cards.back()->SetCardPicture(tableau0->cards.back()->GetValue(),tableau0->cards.back()->GetCardOpen());
-						tableau0->RemoveCard();
-					}
-
-					else if ((!foundationStacks[1]->cards.empty() && (tableau0->cards.back()->GetValue()-4)==foundationStacks[1]->cards.back()->GetValue()) || ((tableau0->cards.back()->GetValue())<5 && foundationStacks[1]->cards.size()==0)) {
-						tableau0->cards.back()->SetParentStack(foundationStacks[1]);
-						foundationStacks[1]->AddCard(tableau0->cards.back());
-						tableau0->cards.back()->BringToFront();
-						tableau0->cards.back()->SetCardOpen(true);
-						tableau0->cards.back()->SetCardPicture(tableau0->cards.back()->GetValue(),tableau0->cards.back()->GetCardOpen());
-						tableau0->RemoveCard();
-					}
-
-					else if ((!foundationStacks[2]->cards.empty() && (tableau0->cards.back()->GetValue()-4)==foundationStacks[2]->cards.back()->GetValue()) || ((tableau0->cards.back()->GetValue())<5 && foundationStacks[2]->cards.size()==0)) {
-						tableau0->cards.back()->SetParentStack(foundationStacks[2]);
-						foundationStacks[2]->AddCard(tableau0->cards.back());
-						tableau0->cards.back()->BringToFront();
-						tableau0->cards.back()->SetCardOpen(true);
-						tableau0->cards.back()->SetCardPicture(tableau0->cards.back()->GetValue(),tableau0->cards.back()->GetCardOpen());
-						tableau0->RemoveCard();
-					}
-
-					else if ((!foundationStacks[3]->cards.empty() && (tableau0->cards.back()->GetValue()-4)==foundationStacks[3]->cards.back()->GetValue()) || ((tableau0->cards.back()->GetValue())<5 && foundationStacks[3]->cards.size()==0)) {
-						tableau0->cards.back()->SetParentStack(foundationStacks[3]);
-						foundationStacks[3]->AddCard(tableau0->cards.back());
-						tableau0->cards.back()->BringToFront();
-						tableau0->cards.back()->SetCardOpen(true);
-						tableau0->cards.back()->SetCardPicture(tableau0->cards.back()->GetValue(),tableau0->cards.back()->GetCardOpen());
-						tableau0->RemoveCard();
-					}
-					else {
-						nÑMFT0 = true;
 					}
 				}
 			}
-			else {
-				nÑMFT0 = true;
-			}
+		}
+		else {
+			nÑMFT0 = true;
+		}
 
-			if (!tableau1->cards.empty()) {
-				while (!tableau1->cards.empty() && !nÑMFT1) {
-					if ((!foundationStacks[0]->cards.empty() && (tableau1->cards.back()->GetValue()-4)==foundationStacks[0]->cards.back()->GetValue()) || ((tableau1->cards.back()->GetValue())<5 && foundationStacks[0]->cards.size()==0)) {
-						tableau1->cards.back()->SetParentStack(foundationStacks[0]);
-						foundationStacks[0]->AddCard(tableau1->cards.back());
-						tableau1->cards.back()->BringToFront();
+		if (!tableau1->cards.empty()) {
+			while (!tableau1->cards.empty() && !nÑMFT1) {
+				if ((!foundationStacks[0]->cards.empty() && (tableau1->cards.back()->GetValue()-4)==foundationStacks[0]->cards.back()->GetValue()) || ((tableau1->cards.back()->GetValue())<5 && foundationStacks[0]->cards.size()==0)) {
+					tableau1->cards.back()->SetParentStack(foundationStacks[0]);
+					foundationStacks[0]->AddCard(tableau1->cards.back());
+				}
+
+				else if ((!foundationStacks[1]->cards.empty() && (tableau1->cards.back()->GetValue()-4)==foundationStacks[1]->cards.back()->GetValue()) || ((tableau1->cards.back()->GetValue())<5 && foundationStacks[1]->cards.size()==0)) {
+					tableau1->cards.back()->SetParentStack(foundationStacks[1]);
+					foundationStacks[1]->AddCard(tableau1->cards.back());
+				}
+
+				else if ((!foundationStacks[2]->cards.empty() && (tableau1->cards.back()->GetValue()-4)==foundationStacks[2]->cards.back()->GetValue()) || ((tableau1->cards.back()->GetValue())<5 && foundationStacks[2]->cards.size()==0)) {
+					tableau1->cards.back()->SetParentStack(foundationStacks[2]);
+					foundationStacks[2]->AddCard(tableau1->cards.back());
+				}
+
+				else if ((!foundationStacks[3]->cards.empty() && (tableau1->cards.back()->GetValue()-4)==foundationStacks[3]->cards.back()->GetValue()) || ((tableau1->cards.back()->GetValue())<5 && foundationStacks[3]->cards.size()==0)) {
+					tableau1->cards.back()->SetParentStack(foundationStacks[3]);
+					foundationStacks[3]->AddCard(tableau1->cards.back());
+				}
+				else {
+					nÑMFT1 = true;
+				}
+				if (!nÑMFT1) {
+					tableau1->cards.back()->BringToFront();
+					tableau1->RemoveCard();
+					if (!tableau1->cards.empty()) {
 						tableau1->cards.back()->SetCardOpen(true);
 						tableau1->cards.back()->SetCardPicture(tableau1->cards.back()->GetValue(),tableau1->cards.back()->GetCardOpen());
-						tableau1->RemoveCard();
-					}
-
-					else if ((!foundationStacks[1]->cards.empty() && (tableau1->cards.back()->GetValue()-4)==foundationStacks[1]->cards.back()->GetValue()) || ((tableau1->cards.back()->GetValue())<5 && foundationStacks[1]->cards.size()==0)) {
-						tableau1->cards.back()->SetParentStack(foundationStacks[1]);
-						foundationStacks[1]->AddCard(tableau1->cards.back());
-						tableau1->cards.back()->BringToFront();
-						tableau1->cards.back()->SetCardOpen(true);
-						tableau1->cards.back()->SetCardPicture(tableau1->cards.back()->GetValue(),tableau1->cards.back()->GetCardOpen());
-						tableau1->RemoveCard();
-					}
-
-					else if ((!foundationStacks[2]->cards.empty() && (tableau1->cards.back()->GetValue()-4)==foundationStacks[2]->cards.back()->GetValue()) || ((tableau1->cards.back()->GetValue())<5 && foundationStacks[2]->cards.size()==0)) {
-						tableau1->cards.back()->SetParentStack(foundationStacks[2]);
-						foundationStacks[2]->AddCard(tableau1->cards.back());
-						tableau1->cards.back()->BringToFront();
-						tableau1->cards.back()->SetCardOpen(true);
-						tableau1->cards.back()->SetCardPicture(tableau1->cards.back()->GetValue(),tableau1->cards.back()->GetCardOpen());
-						tableau1->RemoveCard();
-					}
-
-					else if ((!foundationStacks[3]->cards.empty() && (tableau1->cards.back()->GetValue()-4)==foundationStacks[3]->cards.back()->GetValue()) || ((tableau1->cards.back()->GetValue())<5 && foundationStacks[3]->cards.size()==0)) {
-						tableau1->cards.back()->SetParentStack(foundationStacks[3]);
-						foundationStacks[3]->AddCard(tableau1->cards.back());
-						tableau1->cards.back()->BringToFront();
-						tableau1->cards.back()->SetCardOpen(true);
-						tableau1->cards.back()->SetCardPicture(tableau1->cards.back()->GetValue(),tableau1->cards.back()->GetCardOpen());
-						tableau1->RemoveCard();
-					}
-					else {
-						nÑMFT1 = true;
 					}
 				}
 			}
-            else {
-				nÑMFT1 = true;
-			}
+		}
+		else {
+			nÑMFT1 = true;
+		}
 
-			if (!tableau2->cards.empty()) {
-				while (!tableau2->cards.empty() && !nÑMFT2) {
-					if ((!foundationStacks[0]->cards.empty() && (tableau2->cards.back()->GetValue()-4)==foundationStacks[0]->cards.back()->GetValue()) || ((tableau2->cards.back()->GetValue())<5 && foundationStacks[0]->cards.size()==0)) {
-						tableau2->cards.back()->SetParentStack(foundationStacks[0]);
-						foundationStacks[0]->AddCard(tableau2->cards.back());
-						tableau2->cards.back()->BringToFront();
+		if (!tableau2->cards.empty()) {
+			while (!tableau2->cards.empty() && !nÑMFT2) {
+				if ((!foundationStacks[0]->cards.empty() && (tableau2->cards.back()->GetValue()-4)==foundationStacks[0]->cards.back()->GetValue()) || ((tableau2->cards.back()->GetValue())<5 && foundationStacks[0]->cards.size()==0)) {
+					tableau2->cards.back()->SetParentStack(foundationStacks[0]);
+					foundationStacks[0]->AddCard(tableau2->cards.back());
+				}
+
+				else if ((!foundationStacks[1]->cards.empty() && (tableau2->cards.back()->GetValue()-4)==foundationStacks[1]->cards.back()->GetValue()) || ((tableau2->cards.back()->GetValue())<5 && foundationStacks[1]->cards.size()==0)) {
+					tableau2->cards.back()->SetParentStack(foundationStacks[1]);
+					foundationStacks[1]->AddCard(tableau2->cards.back());
+				}
+
+				else if ((!foundationStacks[2]->cards.empty() && (tableau2->cards.back()->GetValue()-4)==foundationStacks[2]->cards.back()->GetValue()) || ((tableau2->cards.back()->GetValue())<5 && foundationStacks[2]->cards.size()==0)) {
+					tableau2->cards.back()->SetParentStack(foundationStacks[2]);
+					foundationStacks[2]->AddCard(tableau2->cards.back());
+				}
+
+				else if ((!foundationStacks[3]->cards.empty() && (tableau2->cards.back()->GetValue()-4)==foundationStacks[3]->cards.back()->GetValue()) || ((tableau2->cards.back()->GetValue())<5 && foundationStacks[3]->cards.size()==0)) {
+					tableau2->cards.back()->SetParentStack(foundationStacks[3]);
+					foundationStacks[3]->AddCard(tableau2->cards.back());
+				}
+				else {
+					nÑMFT2 = true;
+				}
+				if (!nÑMFT2) {
+					tableau2->cards.back()->BringToFront();
+					tableau2->RemoveCard();
+					if (!tableau2->cards.empty()) {
 						tableau2->cards.back()->SetCardOpen(true);
 						tableau2->cards.back()->SetCardPicture(tableau2->cards.back()->GetValue(),tableau2->cards.back()->GetCardOpen());
-						tableau2->RemoveCard();
-					}
-
-					else if ((!foundationStacks[1]->cards.empty() && (tableau2->cards.back()->GetValue()-4)==foundationStacks[1]->cards.back()->GetValue()) || ((tableau2->cards.back()->GetValue())<5 && foundationStacks[1]->cards.size()==0)) {
-						tableau2->cards.back()->SetParentStack(foundationStacks[1]);
-						foundationStacks[1]->AddCard(tableau2->cards.back());
-						tableau2->cards.back()->BringToFront();
-						tableau2->cards.back()->SetCardOpen(true);
-						tableau2->cards.back()->SetCardPicture(tableau2->cards.back()->GetValue(),tableau2->cards.back()->GetCardOpen());
-						tableau2->RemoveCard();
-					}
-
-					else if ((!foundationStacks[2]->cards.empty() && (tableau2->cards.back()->GetValue()-4)==foundationStacks[2]->cards.back()->GetValue()) || ((tableau2->cards.back()->GetValue())<5 && foundationStacks[2]->cards.size()==0)) {
-						tableau2->cards.back()->SetParentStack(foundationStacks[2]);
-						foundationStacks[2]->AddCard(tableau2->cards.back());
-						tableau2->cards.back()->BringToFront();
-						tableau2->cards.back()->SetCardOpen(true);
-						tableau2->cards.back()->SetCardPicture(tableau2->cards.back()->GetValue(),tableau2->cards.back()->GetCardOpen());
-						tableau2->RemoveCard();
-					}
-
-					else if ((!foundationStacks[3]->cards.empty() && (tableau2->cards.back()->GetValue()-4)==foundationStacks[3]->cards.back()->GetValue()) || ((tableau2->cards.back()->GetValue())<5 && foundationStacks[3]->cards.size()==0)) {
-						tableau2->cards.back()->SetParentStack(foundationStacks[3]);
-						foundationStacks[3]->AddCard(tableau2->cards.back());
-						tableau2->cards.back()->BringToFront();
-						tableau2->cards.back()->SetCardOpen(true);
-						tableau2->cards.back()->SetCardPicture(tableau2->cards.back()->GetValue(),tableau2->cards.back()->GetCardOpen());
-						tableau2->RemoveCard();
-					}
-					else {
-						nÑMFT2 = true;
 					}
 				}
 			}
-            else {
-				nÑMFT2 = true;
-			}
+		}
+		else {
+			nÑMFT2 = true;
+		}
 
-			if (!tableau3->cards.empty()) {
-				while (!tableau3->cards.empty() && !nÑMFT3) {
-					if ((!foundationStacks[0]->cards.empty() && (tableau3->cards.back()->GetValue()-4)==foundationStacks[0]->cards.back()->GetValue()) || ((tableau3->cards.back()->GetValue())<5 && foundationStacks[0]->cards.size()==0)) {
-						tableau3->cards.back()->SetParentStack(foundationStacks[0]);
-						foundationStacks[0]->AddCard(tableau3->cards.back());
-						tableau3->cards.back()->BringToFront();
+		if (!tableau3->cards.empty()) {
+			while (!tableau3->cards.empty() && !nÑMFT3) {
+				if ((!foundationStacks[0]->cards.empty() && (tableau3->cards.back()->GetValue()-4)==foundationStacks[0]->cards.back()->GetValue()) || ((tableau3->cards.back()->GetValue())<5 && foundationStacks[0]->cards.size()==0)) {
+					tableau3->cards.back()->SetParentStack(foundationStacks[0]);
+					foundationStacks[0]->AddCard(tableau3->cards.back());
+				}
+
+				else if ((!foundationStacks[1]->cards.empty() && (tableau3->cards.back()->GetValue()-4)==foundationStacks[1]->cards.back()->GetValue()) || ((tableau3->cards.back()->GetValue())<5 && foundationStacks[1]->cards.size()==0)) {
+					tableau3->cards.back()->SetParentStack(foundationStacks[1]);
+					foundationStacks[1]->AddCard(tableau3->cards.back());
+				}
+
+				else if ((!foundationStacks[2]->cards.empty() && (tableau3->cards.back()->GetValue()-4)==foundationStacks[2]->cards.back()->GetValue()) || ((tableau3->cards.back()->GetValue())<5 && foundationStacks[2]->cards.size()==0)) {
+					tableau3->cards.back()->SetParentStack(foundationStacks[2]);
+					foundationStacks[2]->AddCard(tableau3->cards.back());
+				}
+
+				else if ((!foundationStacks[3]->cards.empty() && (tableau3->cards.back()->GetValue()-4)==foundationStacks[3]->cards.back()->GetValue()) || ((tableau3->cards.back()->GetValue())<5 && foundationStacks[3]->cards.size()==0)) {
+					tableau3->cards.back()->SetParentStack(foundationStacks[3]);
+					foundationStacks[3]->AddCard(tableau3->cards.back());
+				}
+				else {
+					nÑMFT3 = true;
+				}
+				if (!nÑMFT3) {
+					tableau3->cards.back()->BringToFront();
+					tableau3->RemoveCard();
+					if (!tableau3->cards.empty()) {
 						tableau3->cards.back()->SetCardOpen(true);
 						tableau3->cards.back()->SetCardPicture(tableau3->cards.back()->GetValue(),tableau3->cards.back()->GetCardOpen());
-						tableau3->RemoveCard();
-					}
-
-					else if ((!foundationStacks[1]->cards.empty() && (tableau3->cards.back()->GetValue()-4)==foundationStacks[1]->cards.back()->GetValue()) || ((tableau3->cards.back()->GetValue())<5 && foundationStacks[1]->cards.size()==0)) {
-						tableau3->cards.back()->SetParentStack(foundationStacks[1]);
-						foundationStacks[1]->AddCard(tableau3->cards.back());
-						tableau3->cards.back()->BringToFront();
-						tableau3->cards.back()->SetCardOpen(true);
-						tableau3->cards.back()->SetCardPicture(tableau3->cards.back()->GetValue(),tableau3->cards.back()->GetCardOpen());
-						tableau3->RemoveCard();
-					}
-
-					else if ((!foundationStacks[2]->cards.empty() && (tableau3->cards.back()->GetValue()-4)==foundationStacks[2]->cards.back()->GetValue()) || ((tableau3->cards.back()->GetValue())<5 && foundationStacks[2]->cards.size()==0)) {
-						tableau3->cards.back()->SetParentStack(foundationStacks[2]);
-						foundationStacks[2]->AddCard(tableau3->cards.back());
-						tableau3->cards.back()->BringToFront();
-						tableau3->cards.back()->SetCardOpen(true);
-						tableau3->cards.back()->SetCardPicture(tableau3->cards.back()->GetValue(),tableau3->cards.back()->GetCardOpen());
-						tableau3->RemoveCard();
-					}
-
-					else if ((!foundationStacks[3]->cards.empty() && (tableau3->cards.back()->GetValue()-4)==foundationStacks[3]->cards.back()->GetValue()) || ((tableau3->cards.back()->GetValue())<5 && foundationStacks[3]->cards.size()==0)) {
-						tableau3->cards.back()->SetParentStack(foundationStacks[3]);
-						foundationStacks[3]->AddCard(tableau3->cards.back());
-						tableau3->cards.back()->BringToFront();
-						tableau3->cards.back()->SetCardOpen(true);
-						tableau3->cards.back()->SetCardPicture(tableau3->cards.back()->GetValue(),tableau3->cards.back()->GetCardOpen());
-						tableau3->RemoveCard();
-					}
-					else {
-						nÑMFT3 = true;
 					}
 				}
 			}
-            else {
-				nÑMFT3 = true;
-			}
+		}
+		else {
+			nÑMFT3 = true;
+		}
 
-			if (!tableau4->cards.empty()) {
-				while (!tableau4->cards.empty() && !nÑMFT4) {
-					if ((!foundationStacks[0]->cards.empty() && (tableau4->cards.back()->GetValue()-4)==foundationStacks[0]->cards.back()->GetValue()) || ((tableau4->cards.back()->GetValue())<5 && foundationStacks[0]->cards.size()==0)) {
-						tableau4->cards.back()->SetParentStack(foundationStacks[0]);
-						foundationStacks[0]->AddCard(tableau4->cards.back());
-						tableau4->cards.back()->BringToFront();
+		if (!tableau4->cards.empty()) {
+			while (!tableau4->cards.empty() && !nÑMFT4) {
+				if ((!foundationStacks[0]->cards.empty() && (tableau4->cards.back()->GetValue()-4)==foundationStacks[0]->cards.back()->GetValue()) || ((tableau4->cards.back()->GetValue())<5 && foundationStacks[0]->cards.size()==0)) {
+					tableau4->cards.back()->SetParentStack(foundationStacks[0]);
+					foundationStacks[0]->AddCard(tableau4->cards.back());
+				}
+
+				else if ((!foundationStacks[1]->cards.empty() && (tableau4->cards.back()->GetValue()-4)==foundationStacks[1]->cards.back()->GetValue()) || ((tableau4->cards.back()->GetValue())<5 && foundationStacks[1]->cards.size()==0)) {
+					tableau4->cards.back()->SetParentStack(foundationStacks[1]);
+					foundationStacks[1]->AddCard(tableau4->cards.back());;
+				}
+
+				else if ((!foundationStacks[2]->cards.empty() && (tableau4->cards.back()->GetValue()-4)==foundationStacks[2]->cards.back()->GetValue()) || ((tableau4->cards.back()->GetValue())<5 && foundationStacks[2]->cards.size()==0)) {
+					tableau4->cards.back()->SetParentStack(foundationStacks[2]);
+					foundationStacks[2]->AddCard(tableau4->cards.back());
+				}
+
+				else if ((!foundationStacks[3]->cards.empty() && (tableau4->cards.back()->GetValue()-4)==foundationStacks[3]->cards.back()->GetValue()) || ((tableau4->cards.back()->GetValue())<5 && foundationStacks[3]->cards.size()==0)) {
+					tableau4->cards.back()->SetParentStack(foundationStacks[3]);
+					foundationStacks[3]->AddCard(tableau4->cards.back());
+				}
+				else {
+					nÑMFT4 = true;
+				}
+				if (!nÑMFT4) {
+					tableau4->cards.back()->BringToFront();
+					tableau4->RemoveCard();
+					if (!tableau4->cards.empty()) {
 						tableau4->cards.back()->SetCardOpen(true);
 						tableau4->cards.back()->SetCardPicture(tableau4->cards.back()->GetValue(),tableau4->cards.back()->GetCardOpen());
-						tableau4->RemoveCard();
-					}
-
-					else if ((!foundationStacks[1]->cards.empty() && (tableau4->cards.back()->GetValue()-4)==foundationStacks[1]->cards.back()->GetValue()) || ((tableau4->cards.back()->GetValue())<5 && foundationStacks[1]->cards.size()==0)) {
-						tableau4->cards.back()->SetParentStack(foundationStacks[1]);
-						foundationStacks[1]->AddCard(tableau4->cards.back());
-						tableau4->cards.back()->BringToFront();
-						tableau4->cards.back()->SetCardOpen(true);
-						tableau4->cards.back()->SetCardPicture(tableau4->cards.back()->GetValue(),tableau4->cards.back()->GetCardOpen());
-						tableau4->RemoveCard();
-					}
-
-					else if ((!foundationStacks[2]->cards.empty() && (tableau4->cards.back()->GetValue()-4)==foundationStacks[2]->cards.back()->GetValue()) || ((tableau4->cards.back()->GetValue())<5 && foundationStacks[2]->cards.size()==0)) {
-						tableau4->cards.back()->SetParentStack(foundationStacks[2]);
-						foundationStacks[2]->AddCard(tableau4->cards.back());
-						tableau4->cards.back()->BringToFront();
-						tableau4->cards.back()->SetCardOpen(true);
-						tableau4->cards.back()->SetCardPicture(tableau4->cards.back()->GetValue(),tableau4->cards.back()->GetCardOpen());
-						tableau4->RemoveCard();
-					}
-
-					else if ((!foundationStacks[3]->cards.empty() && (tableau4->cards.back()->GetValue()-4)==foundationStacks[3]->cards.back()->GetValue()) || ((tableau4->cards.back()->GetValue())<5 && foundationStacks[3]->cards.size()==0)) {
-						tableau4->cards.back()->SetParentStack(foundationStacks[3]);
-						foundationStacks[3]->AddCard(tableau4->cards.back());
-						tableau4->cards.back()->BringToFront();
-						tableau4->cards.back()->SetCardOpen(true);
-						tableau4->cards.back()->SetCardPicture(tableau4->cards.back()->GetValue(),tableau4->cards.back()->GetCardOpen());
-						tableau4->RemoveCard();
-					}
-					else {
-						nÑMFT4 = true;
 					}
 				}
 			}
-            else {
-				nÑMFT4 = true;
-			}
-			if (!tableau5->cards.empty()) {
-				while (!tableau5->cards.empty() && !nÑMFT5) {
-					if ((!foundationStacks[0]->cards.empty() && (tableau5->cards.back()->GetValue()-4)==foundationStacks[0]->cards.back()->GetValue()) || ((tableau5->cards.back()->GetValue())<5 && foundationStacks[0]->cards.size()==0)) {
-						tableau5->cards.back()->SetParentStack(foundationStacks[0]);
-						foundationStacks[0]->AddCard(tableau5->cards.back());
-						tableau5->cards.back()->BringToFront();
-						tableau5->cards.back()->SetCardOpen(true);
-						tableau5->cards.back()->SetCardPicture(tableau5->cards.back()->GetValue(),tableau5->cards.back()->GetCardOpen());
-						tableau5->RemoveCard();
-					}
+		}
+		else {
+			nÑMFT4 = true;
+		}
+		if (!tableau5->cards.empty()) {
+			while (!tableau5->cards.empty() && !nÑMFT5) {
+				if ((!foundationStacks[0]->cards.empty() && (tableau5->cards.back()->GetValue()-4)==foundationStacks[0]->cards.back()->GetValue()) || ((tableau5->cards.back()->GetValue())<5 && foundationStacks[0]->cards.size()==0)) {
+					tableau5->cards.back()->SetParentStack(foundationStacks[0]);
+					foundationStacks[0]->AddCard(tableau5->cards.back());
+				}
 
-					else if ((!foundationStacks[1]->cards.empty() && (tableau5->cards.back()->GetValue()-4)==foundationStacks[1]->cards.back()->GetValue()) || ((tableau5->cards.back()->GetValue())<5 && foundationStacks[1]->cards.size()==0)) {
-						tableau5->cards.back()->SetParentStack(foundationStacks[1]);
-						foundationStacks[1]->AddCard(tableau5->cards.back());
-						tableau5->cards.back()->BringToFront();
-						tableau5->cards.back()->SetCardOpen(true);
-						tableau5->cards.back()->SetCardPicture(tableau5->cards.back()->GetValue(),tableau5->cards.back()->GetCardOpen());
-						tableau5->RemoveCard();
-					}
+				else if ((!foundationStacks[1]->cards.empty() && (tableau5->cards.back()->GetValue()-4)==foundationStacks[1]->cards.back()->GetValue()) || ((tableau5->cards.back()->GetValue())<5 && foundationStacks[1]->cards.size()==0)) {
+					tableau5->cards.back()->SetParentStack(foundationStacks[1]);
+					foundationStacks[1]->AddCard(tableau5->cards.back());
+				}
 
-					else if ((!foundationStacks[2]->cards.empty() && (tableau5->cards.back()->GetValue()-4)==foundationStacks[2]->cards.back()->GetValue()) || ((tableau5->cards.back()->GetValue())<5 && foundationStacks[2]->cards.size()==0)) {
-						tableau5->cards.back()->SetParentStack(foundationStacks[2]);
-						foundationStacks[2]->AddCard(tableau5->cards.back());
-						tableau5->cards.back()->BringToFront();
-						tableau5->cards.back()->SetCardOpen(true);
-						tableau5->cards.back()->SetCardPicture(tableau5->cards.back()->GetValue(),tableau5->cards.back()->GetCardOpen());
-						tableau5->RemoveCard();
-					}
+				else if ((!foundationStacks[2]->cards.empty() && (tableau5->cards.back()->GetValue()-4)==foundationStacks[2]->cards.back()->GetValue()) || ((tableau5->cards.back()->GetValue())<5 && foundationStacks[2]->cards.size()==0)) {
+					tableau5->cards.back()->SetParentStack(foundationStacks[2]);
+					foundationStacks[2]->AddCard(tableau5->cards.back());
+				}
 
-					else if ((!foundationStacks[3]->cards.empty() && (tableau5->cards.back()->GetValue()-4)==foundationStacks[3]->cards.back()->GetValue()) || ((tableau5->cards.back()->GetValue())<5 && foundationStacks[3]->cards.size()==0)) {
-						tableau5->cards.back()->SetParentStack(foundationStacks[3]);
-						foundationStacks[3]->AddCard(tableau5->cards.back());
-						tableau5->cards.back()->BringToFront();
+				else if ((!foundationStacks[3]->cards.empty() && (tableau5->cards.back()->GetValue()-4)==foundationStacks[3]->cards.back()->GetValue()) || ((tableau5->cards.back()->GetValue())<5 && foundationStacks[3]->cards.size()==0)) {
+					tableau5->cards.back()->SetParentStack(foundationStacks[3]);
+					foundationStacks[3]->AddCard(tableau5->cards.back());
+				}
+				else {
+					nÑMFT5 = true;
+				}
+				if (!nÑMFT5) {
+					tableau5->cards.back()->BringToFront();
+					tableau5->RemoveCard();
+					if (!tableau5->cards.empty()) {
 						tableau5->cards.back()->SetCardOpen(true);
 						tableau5->cards.back()->SetCardPicture(tableau5->cards.back()->GetValue(),tableau5->cards.back()->GetCardOpen());
-						tableau5->RemoveCard();
-					}
-					else {
-						nÑMFT5 = true;
 					}
 				}
 			}
-            else {
-				nÑMFT5 = true;
-			}
+		}
+		else {
+			nÑMFT5 = true;
+		}
 
-			if (!tableau6->cards.empty()) {
-				while (!tableau6->cards.empty() && !nÑMFT6) {
-					if ((!foundationStacks[0]->cards.empty() && (tableau6->cards.back()->GetValue()-4)==foundationStacks[0]->cards.back()->GetValue()) || ((tableau6->cards.back()->GetValue())<5 && foundationStacks[0]->cards.size()==0)) {
-						tableau6->cards.back()->SetParentStack(foundationStacks[0]);
-						foundationStacks[0]->AddCard(tableau6->cards.back());
-						tableau6->cards.back()->BringToFront();
+		if (!tableau6->cards.empty()) {
+			while (!tableau6->cards.empty() && !nÑMFT6) {
+				if ((!foundationStacks[0]->cards.empty() && (tableau6->cards.back()->GetValue()-4)==foundationStacks[0]->cards.back()->GetValue()) || ((tableau6->cards.back()->GetValue())<5 && foundationStacks[0]->cards.size()==0)) {
+					tableau6->cards.back()->SetParentStack(foundationStacks[0]);
+					foundationStacks[0]->AddCard(tableau6->cards.back());
+				}
+
+				else if ((!foundationStacks[1]->cards.empty() && (tableau6->cards.back()->GetValue()-4)==foundationStacks[1]->cards.back()->GetValue()) || ((tableau6->cards.back()->GetValue())<5 && foundationStacks[1]->cards.size()==0)) {
+					tableau6->cards.back()->SetParentStack(foundationStacks[1]);
+					foundationStacks[1]->AddCard(tableau6->cards.back());
+				}
+
+				else if ((!foundationStacks[2]->cards.empty() && (tableau6->cards.back()->GetValue()-4)==foundationStacks[2]->cards.back()->GetValue()) || ((tableau6->cards.back()->GetValue())<5 && foundationStacks[2]->cards.size()==0)) {
+					tableau6->cards.back()->SetParentStack(foundationStacks[2]);
+					foundationStacks[2]->AddCard(tableau6->cards.back());
+				}
+
+				else if ((!foundationStacks[3]->cards.empty() && (tableau6->cards.back()->GetValue()-4)==foundationStacks[3]->cards.back()->GetValue()) || ((tableau6->cards.back()->GetValue())<5 && foundationStacks[3]->cards.size()==0)) {
+					tableau6->cards.back()->SetParentStack(foundationStacks[3]);
+					foundationStacks[3]->AddCard(tableau6->cards.back());
+				}
+				else {
+					nÑMFT6 = true;
+				}
+				if (!nÑMFT6) {
+					tableau6->cards.back()->BringToFront();
+					tableau6->RemoveCard();
+					if (!tableau6->cards.empty()) {
 						tableau6->cards.back()->SetCardOpen(true);
 						tableau6->cards.back()->SetCardPicture(tableau6->cards.back()->GetValue(),tableau6->cards.back()->GetCardOpen());
-						tableau6->RemoveCard();
-					}
-
-					else if ((!foundationStacks[1]->cards.empty() && (tableau6->cards.back()->GetValue()-4)==foundationStacks[1]->cards.back()->GetValue()) || ((tableau6->cards.back()->GetValue())<5 && foundationStacks[1]->cards.size()==0)) {
-						tableau6->cards.back()->SetParentStack(foundationStacks[1]);
-						foundationStacks[1]->AddCard(tableau6->cards.back());
-						tableau6->cards.back()->BringToFront();
-						tableau6->cards.back()->SetCardOpen(true);
-						tableau6->cards.back()->SetCardPicture(tableau6->cards.back()->GetValue(),tableau6->cards.back()->GetCardOpen());
-						tableau6->RemoveCard();
-					}
-
-					else if ((!foundationStacks[2]->cards.empty() && (tableau6->cards.back()->GetValue()-4)==foundationStacks[2]->cards.back()->GetValue()) || ((tableau6->cards.back()->GetValue())<5 && foundationStacks[2]->cards.size()==0)) {
-						tableau6->cards.back()->SetParentStack(foundationStacks[2]);
-						foundationStacks[2]->AddCard(tableau6->cards.back());
-						tableau6->cards.back()->BringToFront();
-						tableau6->cards.back()->SetCardOpen(true);
-						tableau6->cards.back()->SetCardPicture(tableau6->cards.back()->GetValue(),tableau6->cards.back()->GetCardOpen());
-						tableau6->RemoveCard();
-					}
-
-					else if ((!foundationStacks[3]->cards.empty() && (tableau6->cards.back()->GetValue()-4)==foundationStacks[3]->cards.back()->GetValue()) || ((tableau6->cards.back()->GetValue())<5 && foundationStacks[3]->cards.size()==0)) {
-						tableau6->cards.back()->SetParentStack(foundationStacks[3]);
-						foundationStacks[3]->AddCard(tableau6->cards.back());
-						tableau6->cards.back()->BringToFront();
-						tableau6->cards.back()->SetCardOpen(true);
-						tableau6->cards.back()->SetCardPicture(tableau6->cards.back()->GetValue(),tableau6->cards.back()->GetCardOpen());
-						tableau6->RemoveCard();
-					}
-					else {
-						nÑMFT6 = true;
 					}
 				}
 			}
-            else {
-				nÑMFT6 = true;
+		}
+		else {
+			nÑMFT6 = true;
+		}
+
+		if (nÑMFW && nÑMFT0 && nÑMFT1 && nÑMFT2 && nÑMFT3 && nÑMFT4 && nÑMFT5 && nÑMFT6) {
+			nÑMFW = false;
+			nÑMFT0 = false;
+			nÑMFT1 = false;
+			nÑMFT2 = false;
+			nÑMFT3 = false;
+			nÑMFT4 = false;
+			nÑMFT5 = false;
+			nÑMFT6 = false;
+			counter++;
+			if (counter==19) {
+                AVP=true;
 			}
 		}
 	}
 }
 //---------------------------------------------------------------------------
-

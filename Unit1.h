@@ -77,74 +77,15 @@ __published:	// IDE-managed Components
 private:	// User declarations
 
 	float seconds = 0;
-	bool pause = false, gameOpen = false;
+	bool pause = true, gameOpen = false;
 
 	void Play();
 	void LogoutAccount();
 	void PlayOrStop(bool gameOpen, bool I3);
 	void ProcessModalFormResult(TModalResult result);
 	void RegisterOrOpenStatistics (bool N10Enabled,  TForm* Form3, TForm* Form4);
-
-	void AddStacksAndCards(){
-
-
-		stock = new Stock(0,130,5,this);
-		waste = new Waste(1,281,5,this);
-		for (int stackNum = 0; stackNum < 4; ++stackNum) {   //4?
-			foundationStacks.push_back(new Foundation(stackNum+2,583+151*stackNum,5,this));
-		}
-		for (int stackNum = 0; stackNum < 7; ++stackNum) {     //7?
-			tableauStacks.push_back(new Tableau (stackNum+6,130+151*stackNum,160,this));
-		}
-		std::vector<int> cardValues;
-		for (int i = 0; i < 52; ++i) {
-			cardValues.push_back(i+1);
-		}
-		std::random_device rd;
-		std::mt19937 g(static_cast<unsigned>(std::chrono::system_clock::now().time_since_epoch().count()));
-		//std::shuffle(cardValues.begin(), cardValues.end(), g);
-		int cardCounter = 0;
-									 //cardCounter			//cardValues.size()   //tableau ranishe stock
-		for (int carNum = cardCounter+1; carNum < 25; ++carNum) {
-			stock->AddCard(new Card(cardValues[cardCounter++],
-				false,stock,this));
-		}
-
-		for (int stackNum = 0; stackNum < 7; ++stackNum) {
-			for (int numOfCards = 0; numOfCards < stackNum+1; numOfCards++) {
-				if (numOfCards != stackNum) {
-					tableauStacks[stackNum]->AddCardsAtStart(new Card(cardValues[cardCounter++],
-						false,tableauStacks[stackNum],this)); //false
-				}
-				else{
-					tableauStacks[stackNum]->AddCardsAtStart(new Card(cardValues[cardCounter++],
-						true,tableauStacks[stackNum],this));
-				}
-			}
-		}
-
-
-	}
-
-	void ChangeCardStack(Card* card, Stack* newStack) {
-		if (card && newStack) {
-
-		}
-    }
-
-	void DeleteStacksAndCards(){
-		delete stock;
-		delete waste;
-		for (int stackNum = 0; stackNum < 4; ++stackNum) {
-			delete foundationStacks[stackNum];
-		}
-		foundationStacks.clear();
-
-		for (int stackNum = 0; stackNum < 7; ++stackNum) {
-			delete tableauStacks[stackNum];
-		}
-		tableauStacks.clear();
-	};
+	void AddStacksAndCards();
+	void DeleteStacksAndCards();
 
 public:		// User declarations
 	__fastcall TForm1(TComponent* Owner);
@@ -152,6 +93,7 @@ public:		// User declarations
 	Waste* waste;
 	std::vector<Foundation*> foundationStacks;
 	std::vector<Tableau*> tableauStacks;
+    void ChangeCardsStacksByRightClick();
 };
 //---------------------------------------------------------------------------
 extern PACKAGE TForm1 *Form1;
