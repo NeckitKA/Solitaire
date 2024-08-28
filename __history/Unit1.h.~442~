@@ -71,8 +71,6 @@ __published:	// IDE-managed Components
 	void __fastcall Timer1Timer(TObject *Sender);
 	void __fastcall FormClose(TObject *Sender, TCloseAction &Action);
 	void __fastcall N4Click(TObject *Sender);
-	void __fastcall FormMouseUp(TObject *Sender, TMouseButton Button, TShiftState Shift,
-          int X, int Y);
 
 private:	// User declarations
 
@@ -96,19 +94,15 @@ private:	// User declarations
 		for (int stackNum = 0; stackNum < 7; ++stackNum) {     //7?
 			tableauStacks.push_back(new Tableau (stackNum+6,130+151*stackNum,160,this));
 		}
-		std::vector<int> cardValues;
-		for (int i = 0; i < 52; ++i) {
-			cardValues.push_back(i+1);
-		}
+		std::vector<int> cardValues={ 1, 5, 9, 13, 17, 21, 25, 29, 33, 37, 41, 45, 49, 2, 6, 10, 14, 18, 22, 26, 30, 34, 38, 42, 46, 50, 3, 7, 11, 15, 19, 23, 27, 31, 35, 39, 43, 47, 51, 4, 8, 12, 16, 20, 24, 28, 32, 36, 40, 44, 48, 52 }
+;
+		//for (int i = 0; i < 52; ++i) {
+			//cardValues.push_back(i+1);
+		//}
 		std::random_device rd;
 		std::mt19937 g(static_cast<unsigned>(std::chrono::system_clock::now().time_since_epoch().count()));
 		//std::shuffle(cardValues.begin(), cardValues.end(), g);
 		int cardCounter = 0;
-									 //cardCounter			//cardValues.size()   //tableau ranishe stock
-		for (int carNum = cardCounter+1; carNum < 25; ++carNum) {
-			stock->AddCard(new Card(cardValues[cardCounter++],
-				false,stock,this));
-		}
 
 		for (int stackNum = 0; stackNum < 7; ++stackNum) {
 			for (int numOfCards = 0; numOfCards < stackNum+1; numOfCards++) {
@@ -123,7 +117,10 @@ private:	// User declarations
 			}
 		}
 
-
+		for (int carNum = cardCounter; carNum < cardValues.size(); ++carNum) {
+			stock->AddCard(new Card(cardValues[cardCounter++],
+				false,stock,this));
+		}
 	}
 
 	void ChangeCardStack(Card* card, Stack* newStack) {

@@ -71,8 +71,6 @@ __published:	// IDE-managed Components
 	void __fastcall Timer1Timer(TObject *Sender);
 	void __fastcall FormClose(TObject *Sender, TCloseAction &Action);
 	void __fastcall N4Click(TObject *Sender);
-	void __fastcall FormMouseUp(TObject *Sender, TMouseButton Button, TShiftState Shift,
-          int X, int Y);
 
 private:	// User declarations
 
@@ -102,28 +100,15 @@ private:	// User declarations
 		}
 		std::random_device rd;
 		std::mt19937 g(static_cast<unsigned>(std::chrono::system_clock::now().time_since_epoch().count()));
-		//std::shuffle(cardValues.begin(), cardValues.end(), g);
+		std::shuffle(cardValues.begin(), cardValues.end(), g);
 		int cardCounter = 0;
-									 //cardCounter			//cardValues.size()   //tableau ranishe stock
-		for (int carNum = cardCounter+1; carNum < 25; ++carNum) {
+
+		
+
+		for (int carNum = cardCounter; carNum < cardValues.size(); ++carNum) {
 			stock->AddCard(new Card(cardValues[cardCounter++],
 				false,stock,this));
 		}
-
-		for (int stackNum = 0; stackNum < 7; ++stackNum) {
-			for (int numOfCards = 0; numOfCards < stackNum+1; numOfCards++) {
-				if (numOfCards != stackNum) {
-					tableauStacks[stackNum]->AddCardsAtStart(new Card(cardValues[cardCounter++],
-						false,tableauStacks[stackNum],this)); //false
-				}
-				else{
-					tableauStacks[stackNum]->AddCardsAtStart(new Card(cardValues[cardCounter++],
-						true,tableauStacks[stackNum],this));
-				}
-			}
-		}
-
-
 	}
 
 	void ChangeCardStack(Card* card, Stack* newStack) {

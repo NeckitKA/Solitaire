@@ -104,8 +104,8 @@ private:	// User declarations
 		std::mt19937 g(static_cast<unsigned>(std::chrono::system_clock::now().time_since_epoch().count()));
 		//std::shuffle(cardValues.begin(), cardValues.end(), g);
 		int cardCounter = 0;
-									 //cardCounter			//cardValues.size()   //tableau ranishe stock
-		for (int carNum = cardCounter+1; carNum < 25; ++carNum) {
+
+        for (int carNum = cardCounter; carNum < cardValues.size(); ++carNum) {
 			stock->AddCard(new Card(cardValues[cardCounter++],
 				false,stock,this));
 		}

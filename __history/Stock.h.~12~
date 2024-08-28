@@ -7,6 +7,10 @@
 #include "Stack.h"
 //---------------------------------------------------------------------------
 class Stock: public Stack {
+	private:
+		TForm * parentForm;
+		void SetParentForm(TForm* form);
+		TForm* GetParentForm() const;
 	public:
 		Stock(int n, int x, int y, TForm* parentForm);
 		void AddCard(Card* card);

@@ -31,12 +31,12 @@ class Stack{
 
 		Stack (int n, int x, int y, TForm* parentForm);
 		int X,Y;
-		TForm* parentForm;
+        TForm * parentForm;
 		int topCardXPosition;
 		int topCardYPosition;
 
 		std::vector<Card*> cards;
-		TForm* GetParentForm() const;
+        TForm* GetParentForm() const;
         TImage* GetTImage() const;
 		int GetStackNumber() const;
 		int GetTopCardXPosition() const;
@@ -45,7 +45,7 @@ class Stack{
 
 		void SetTopCardYPosition();   //virtual
 
-		virtual void __fastcall OnMouseDown(TObject *Sender, TMouseButton Button, TShiftState Shift,
+        virtual void __fastcall OnMouseDown(TObject *Sender, TMouseButton Button, TShiftState Shift,
 		  int X, int Y);
 
 		virtual ~Stack();

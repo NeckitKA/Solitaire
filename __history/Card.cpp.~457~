@@ -608,8 +608,8 @@ void __fastcall Card::OnMouseUp(TObject *Sender, TMouseButton Button, TShiftStat
 						tableau1->cards.back()->SetParentStack(form->foundationStacks[0]);
 						form->foundationStacks[0]->AddCard(tableau1->cards.back());
 						tableau1->cards.back()->BringToFront();
-						tableau1->cards.back()->SetCardOpen(true);
-						tableau1->cards.back()->SetCardPicture(tableau1->cards.back()->GetValue(),tableau1->cards.back()->GetCardOpen());
+						tableau0->cards.back()->SetCardOpen(true);
+						tableau0->cards.back()->SetCardPicture(tableau0->cards.back()->GetValue(),tableau0->cards.back()->GetCardOpen());
 						tableau1->RemoveCard();
 					}
 
@@ -617,8 +617,8 @@ void __fastcall Card::OnMouseUp(TObject *Sender, TMouseButton Button, TShiftStat
 						tableau1->cards.back()->SetParentStack(form->foundationStacks[1]);
 						form->foundationStacks[1]->AddCard(tableau1->cards.back());
 						tableau1->cards.back()->BringToFront();
-						tableau1->cards.back()->SetCardOpen(true);
-						tableau1->cards.back()->SetCardPicture(tableau1->cards.back()->GetValue(),tableau1->cards.back()->GetCardOpen());
+						tableau0->cards.back()->SetCardOpen(true);
+						tableau0->cards.back()->SetCardPicture(tableau0->cards.back()->GetValue(),tableau0->cards.back()->GetCardOpen());
 						tableau1->RemoveCard();
 					}
 
@@ -626,8 +626,8 @@ void __fastcall Card::OnMouseUp(TObject *Sender, TMouseButton Button, TShiftStat
 						tableau1->cards.back()->SetParentStack(form->foundationStacks[2]);
 						form->foundationStacks[2]->AddCard(tableau1->cards.back());
 						tableau1->cards.back()->BringToFront();
-						tableau1->cards.back()->SetCardOpen(true);
-						tableau1->cards.back()->SetCardPicture(tableau1->cards.back()->GetValue(),tableau1->cards.back()->GetCardOpen());
+						tableau0->cards.back()->SetCardOpen(true);
+						tableau0->cards.back()->SetCardPicture(tableau0->cards.back()->GetValue(),tableau0->cards.back()->GetCardOpen());
 						tableau1->RemoveCard();
 					}
 
@@ -635,8 +635,8 @@ void __fastcall Card::OnMouseUp(TObject *Sender, TMouseButton Button, TShiftStat
 						tableau1->cards.back()->SetParentStack(form->foundationStacks[3]);
 						form->foundationStacks[3]->AddCard(tableau1->cards.back());
 						tableau1->cards.back()->BringToFront();
-						tableau1->cards.back()->SetCardOpen(true);
-						tableau1->cards.back()->SetCardPicture(tableau1->cards.back()->GetValue(),tableau1->cards.back()->GetCardOpen());
+						tableau0->cards.back()->SetCardOpen(true);
+						tableau0->cards.back()->SetCardPicture(tableau0->cards.back()->GetValue(),tableau0->cards.back()->GetCardOpen());
 						tableau1->RemoveCard();
 					}
 					else {
@@ -649,41 +649,41 @@ void __fastcall Card::OnMouseUp(TObject *Sender, TMouseButton Button, TShiftStat
 			}
 
 			if (!tableau2->cards.empty()) {
-				while (!tableau2->cards.empty() && !nÑMFT2) {
-					if ((!form->foundationStacks[0]->cards.empty() && (tableau2->cards.back()->GetValue()-4)==form->foundationStacks[0]->cards.back()->GetValue()) || ((tableau2->cards.back()->GetValue())<5 && form->foundationStacks[0]->cards.size()==0)) {
-						tableau2->cards.back()->SetParentStack(form->foundationStacks[0]);
-						form->foundationStacks[0]->AddCard(tableau2->cards.back());
-						tableau2->cards.back()->BringToFront();
-						tableau2->cards.back()->SetCardOpen(true);
-						tableau2->cards.back()->SetCardPicture(tableau2->cards.back()->GetValue(),tableau2->cards.back()->GetCardOpen());
-						tableau2->RemoveCard();
+				while (!tableau1->cards.empty() && !nÑMFT2) {
+					if ((!form->foundationStacks[0]->cards.empty() && (tableau1->cards.back()->GetValue()-4)==form->foundationStacks[0]->cards.back()->GetValue()) || ((tableau1->cards.back()->GetValue())<5 && form->foundationStacks[0]->cards.size()==0)) {
+						tableau1->cards.back()->SetParentStack(form->foundationStacks[0]);
+						form->foundationStacks[0]->AddCard(tableau1->cards.back());
+						tableau1->cards.back()->BringToFront();
+						tableau0->cards.back()->SetCardOpen(true);
+						tableau0->cards.back()->SetCardPicture(tableau0->cards.back()->GetValue(),tableau0->cards.back()->GetCardOpen());
+						tableau1->RemoveCard();
 					}
 
-					else if ((!form->foundationStacks[1]->cards.empty() && (tableau2->cards.back()->GetValue()-4)==form->foundationStacks[1]->cards.back()->GetValue()) || ((tableau2->cards.back()->GetValue())<5 && form->foundationStacks[1]->cards.size()==0)) {
-						tableau2->cards.back()->SetParentStack(form->foundationStacks[1]);
-						form->foundationStacks[1]->AddCard(tableau2->cards.back());
-						tableau2->cards.back()->BringToFront();
-						tableau2->cards.back()->SetCardOpen(true);
-						tableau2->cards.back()->SetCardPicture(tableau2->cards.back()->GetValue(),tableau2->cards.back()->GetCardOpen());
-						tableau2->RemoveCard();
+					else if ((!form->foundationStacks[1]->cards.empty() && (tableau1->cards.back()->GetValue()-4)==form->foundationStacks[1]->cards.back()->GetValue()) || ((tableau1->cards.back()->GetValue())<5 && form->foundationStacks[1]->cards.size()==0)) {
+						tableau1->cards.back()->SetParentStack(form->foundationStacks[1]);
+						form->foundationStacks[1]->AddCard(tableau1->cards.back());
+						tableau1->cards.back()->BringToFront();
+						tableau0->cards.back()->SetCardOpen(true);
+						tableau0->cards.back()->SetCardPicture(tableau0->cards.back()->GetValue(),tableau0->cards.back()->GetCardOpen());
+						tableau1->RemoveCard();
 					}
 
-					else if ((!form->foundationStacks[2]->cards.empty() && (tableau2->cards.back()->GetValue()-4)==form->foundationStacks[2]->cards.back()->GetValue()) || ((tableau2->cards.back()->GetValue())<5 && form->foundationStacks[2]->cards.size()==0)) {
-						tableau2->cards.back()->SetParentStack(form->foundationStacks[2]);
-						form->foundationStacks[2]->AddCard(tableau2->cards.back());
-						tableau2->cards.back()->BringToFront();
-						tableau2->cards.back()->SetCardOpen(true);
-						tableau2->cards.back()->SetCardPicture(tableau2->cards.back()->GetValue(),tableau2->cards.back()->GetCardOpen());
-						tableau2->RemoveCard();
+					else if ((!form->foundationStacks[2]->cards.empty() && (tableau1->cards.back()->GetValue()-4)==form->foundationStacks[2]->cards.back()->GetValue()) || ((tableau1->cards.back()->GetValue())<5 && form->foundationStacks[2]->cards.size()==0)) {
+						tableau1->cards.back()->SetParentStack(form->foundationStacks[2]);
+						form->foundationStacks[2]->AddCard(tableau1->cards.back());
+						tableau1->cards.back()->BringToFront();
+						tableau0->cards.back()->SetCardOpen(true);
+						tableau0->cards.back()->SetCardPicture(tableau0->cards.back()->GetValue(),tableau0->cards.back()->GetCardOpen());
+						tableau1->RemoveCard();
 					}
 
-					else if ((!form->foundationStacks[3]->cards.empty() && (tableau2->cards.back()->GetValue()-4)==form->foundationStacks[3]->cards.back()->GetValue()) || ((tableau2->cards.back()->GetValue())<5 && form->foundationStacks[3]->cards.size()==0)) {
-						tableau2->cards.back()->SetParentStack(form->foundationStacks[3]);
-						form->foundationStacks[3]->AddCard(tableau2->cards.back());
-						tableau2->cards.back()->BringToFront();
-						tableau2->cards.back()->SetCardOpen(true);
-						tableau2->cards.back()->SetCardPicture(tableau2->cards.back()->GetValue(),tableau2->cards.back()->GetCardOpen());
-						tableau2->RemoveCard();
+					else if ((!form->foundationStacks[3]->cards.empty() && (tableau1->cards.back()->GetValue()-4)==form->foundationStacks[3]->cards.back()->GetValue()) || ((tableau1->cards.back()->GetValue())<5 && form->foundationStacks[3]->cards.size()==0)) {
+						tableau1->cards.back()->SetParentStack(form->foundationStacks[3]);
+						form->foundationStacks[3]->AddCard(tableau1->cards.back());
+						tableau1->cards.back()->BringToFront();
+						tableau0->cards.back()->SetCardOpen(true);
+						tableau0->cards.back()->SetCardPicture(tableau0->cards.back()->GetValue(),tableau0->cards.back()->GetCardOpen());
+						tableau1->RemoveCard();
 					}
 					else {
 						nÑMFT2 = true;
@@ -700,8 +700,8 @@ void __fastcall Card::OnMouseUp(TObject *Sender, TMouseButton Button, TShiftStat
 						tableau3->cards.back()->SetParentStack(form->foundationStacks[0]);
 						form->foundationStacks[0]->AddCard(tableau3->cards.back());
 						tableau3->cards.back()->BringToFront();
-						tableau3->cards.back()->SetCardOpen(true);
-						tableau3->cards.back()->SetCardPicture(tableau3->cards.back()->GetValue(),tableau3->cards.back()->GetCardOpen());
+						tableau0->cards.back()->SetCardOpen(true);
+						tableau0->cards.back()->SetCardPicture(tableau0->cards.back()->GetValue(),tableau0->cards.back()->GetCardOpen());
 						tableau3->RemoveCard();
 					}
 
@@ -709,8 +709,8 @@ void __fastcall Card::OnMouseUp(TObject *Sender, TMouseButton Button, TShiftStat
 						tableau3->cards.back()->SetParentStack(form->foundationStacks[1]);
 						form->foundationStacks[1]->AddCard(tableau3->cards.back());
 						tableau3->cards.back()->BringToFront();
-						tableau3->cards.back()->SetCardOpen(true);
-						tableau3->cards.back()->SetCardPicture(tableau3->cards.back()->GetValue(),tableau3->cards.back()->GetCardOpen());
+						tableau0->cards.back()->SetCardOpen(true);
+						tableau0->cards.back()->SetCardPicture(tableau0->cards.back()->GetValue(),tableau0->cards.back()->GetCardOpen());
 						tableau3->RemoveCard();
 					}
 
@@ -718,8 +718,8 @@ void __fastcall Card::OnMouseUp(TObject *Sender, TMouseButton Button, TShiftStat
 						tableau3->cards.back()->SetParentStack(form->foundationStacks[2]);
 						form->foundationStacks[2]->AddCard(tableau3->cards.back());
 						tableau3->cards.back()->BringToFront();
-						tableau3->cards.back()->SetCardOpen(true);
-						tableau3->cards.back()->SetCardPicture(tableau3->cards.back()->GetValue(),tableau3->cards.back()->GetCardOpen());
+						tableau0->cards.back()->SetCardOpen(true);
+						tableau0->cards.back()->SetCardPicture(tableau0->cards.back()->GetValue(),tableau0->cards.back()->GetCardOpen());
 						tableau3->RemoveCard();
 					}
 
@@ -727,8 +727,8 @@ void __fastcall Card::OnMouseUp(TObject *Sender, TMouseButton Button, TShiftStat
 						tableau3->cards.back()->SetParentStack(form->foundationStacks[3]);
 						form->foundationStacks[3]->AddCard(tableau3->cards.back());
 						tableau3->cards.back()->BringToFront();
-						tableau3->cards.back()->SetCardOpen(true);
-						tableau3->cards.back()->SetCardPicture(tableau3->cards.back()->GetValue(),tableau3->cards.back()->GetCardOpen());
+						tableau0->cards.back()->SetCardOpen(true);
+						tableau0->cards.back()->SetCardPicture(tableau0->cards.back()->GetValue(),tableau0->cards.back()->GetCardOpen());
 						tableau3->RemoveCard();
 					}
 					else {
@@ -746,8 +746,8 @@ void __fastcall Card::OnMouseUp(TObject *Sender, TMouseButton Button, TShiftStat
 						tableau4->cards.back()->SetParentStack(form->foundationStacks[0]);
 						form->foundationStacks[0]->AddCard(tableau4->cards.back());
 						tableau4->cards.back()->BringToFront();
-						tableau4->cards.back()->SetCardOpen(true);
-						tableau4->cards.back()->SetCardPicture(tableau4->cards.back()->GetValue(),tableau4->cards.back()->GetCardOpen());
+						tableau0->cards.back()->SetCardOpen(true);
+						tableau0->cards.back()->SetCardPicture(tableau0->cards.back()->GetValue(),tableau0->cards.back()->GetCardOpen());
 						tableau4->RemoveCard();
 					}
 
@@ -755,8 +755,8 @@ void __fastcall Card::OnMouseUp(TObject *Sender, TMouseButton Button, TShiftStat
 						tableau4->cards.back()->SetParentStack(form->foundationStacks[1]);
 						form->foundationStacks[1]->AddCard(tableau4->cards.back());
 						tableau4->cards.back()->BringToFront();
-						tableau4->cards.back()->SetCardOpen(true);
-						tableau4->cards.back()->SetCardPicture(tableau4->cards.back()->GetValue(),tableau4->cards.back()->GetCardOpen());
+						tableau0->cards.back()->SetCardOpen(true);
+						tableau0->cards.back()->SetCardPicture(tableau0->cards.back()->GetValue(),tableau0->cards.back()->GetCardOpen());
 						tableau4->RemoveCard();
 					}
 
@@ -764,8 +764,8 @@ void __fastcall Card::OnMouseUp(TObject *Sender, TMouseButton Button, TShiftStat
 						tableau4->cards.back()->SetParentStack(form->foundationStacks[2]);
 						form->foundationStacks[2]->AddCard(tableau4->cards.back());
 						tableau4->cards.back()->BringToFront();
-						tableau4->cards.back()->SetCardOpen(true);
-						tableau4->cards.back()->SetCardPicture(tableau4->cards.back()->GetValue(),tableau4->cards.back()->GetCardOpen());
+						tableau0->cards.back()->SetCardOpen(true);
+						tableau0->cards.back()->SetCardPicture(tableau0->cards.back()->GetValue(),tableau0->cards.back()->GetCardOpen());
 						tableau4->RemoveCard();
 					}
 
@@ -773,8 +773,8 @@ void __fastcall Card::OnMouseUp(TObject *Sender, TMouseButton Button, TShiftStat
 						tableau4->cards.back()->SetParentStack(form->foundationStacks[3]);
 						form->foundationStacks[3]->AddCard(tableau4->cards.back());
 						tableau4->cards.back()->BringToFront();
-						tableau4->cards.back()->SetCardOpen(true);
-						tableau4->cards.back()->SetCardPicture(tableau4->cards.back()->GetValue(),tableau4->cards.back()->GetCardOpen());
+						tableau0->cards.back()->SetCardOpen(true);
+						tableau0->cards.back()->SetCardPicture(tableau0->cards.back()->GetValue(),tableau0->cards.back()->GetCardOpen());
 						tableau4->RemoveCard();
 					}
 					else {
@@ -791,8 +791,8 @@ void __fastcall Card::OnMouseUp(TObject *Sender, TMouseButton Button, TShiftStat
 						tableau5->cards.back()->SetParentStack(form->foundationStacks[0]);
 						form->foundationStacks[0]->AddCard(tableau5->cards.back());
 						tableau5->cards.back()->BringToFront();
-						tableau5->cards.back()->SetCardOpen(true);
-						tableau5->cards.back()->SetCardPicture(tableau5->cards.back()->GetValue(),tableau5->cards.back()->GetCardOpen());
+						tableau0->cards.back()->SetCardOpen(true);
+						tableau0->cards.back()->SetCardPicture(tableau0->cards.back()->GetValue(),tableau0->cards.back()->GetCardOpen());
 						tableau5->RemoveCard();
 					}
 
@@ -800,8 +800,8 @@ void __fastcall Card::OnMouseUp(TObject *Sender, TMouseButton Button, TShiftStat
 						tableau5->cards.back()->SetParentStack(form->foundationStacks[1]);
 						form->foundationStacks[1]->AddCard(tableau5->cards.back());
 						tableau5->cards.back()->BringToFront();
-						tableau5->cards.back()->SetCardOpen(true);
-						tableau5->cards.back()->SetCardPicture(tableau5->cards.back()->GetValue(),tableau5->cards.back()->GetCardOpen());
+						tableau0->cards.back()->SetCardOpen(true);
+						tableau0->cards.back()->SetCardPicture(tableau0->cards.back()->GetValue(),tableau0->cards.back()->GetCardOpen());
 						tableau5->RemoveCard();
 					}
 
@@ -809,8 +809,8 @@ void __fastcall Card::OnMouseUp(TObject *Sender, TMouseButton Button, TShiftStat
 						tableau5->cards.back()->SetParentStack(form->foundationStacks[2]);
 						form->foundationStacks[2]->AddCard(tableau5->cards.back());
 						tableau5->cards.back()->BringToFront();
-						tableau5->cards.back()->SetCardOpen(true);
-						tableau5->cards.back()->SetCardPicture(tableau5->cards.back()->GetValue(),tableau5->cards.back()->GetCardOpen());
+						tableau0->cards.back()->SetCardOpen(true);
+						tableau0->cards.back()->SetCardPicture(tableau0->cards.back()->GetValue(),tableau0->cards.back()->GetCardOpen());
 						tableau5->RemoveCard();
 					}
 
@@ -818,8 +818,8 @@ void __fastcall Card::OnMouseUp(TObject *Sender, TMouseButton Button, TShiftStat
 						tableau5->cards.back()->SetParentStack(form->foundationStacks[3]);
 						form->foundationStacks[3]->AddCard(tableau5->cards.back());
 						tableau5->cards.back()->BringToFront();
-						tableau5->cards.back()->SetCardOpen(true);
-						tableau5->cards.back()->SetCardPicture(tableau5->cards.back()->GetValue(),tableau5->cards.back()->GetCardOpen());
+						tableau0->cards.back()->SetCardOpen(true);
+						tableau0->cards.back()->SetCardPicture(tableau0->cards.back()->GetValue(),tableau0->cards.back()->GetCardOpen());
 						tableau5->RemoveCard();
 					}
 					else {
@@ -837,8 +837,8 @@ void __fastcall Card::OnMouseUp(TObject *Sender, TMouseButton Button, TShiftStat
 						tableau6->cards.back()->SetParentStack(form->foundationStacks[0]);
 						form->foundationStacks[0]->AddCard(tableau6->cards.back());
 						tableau6->cards.back()->BringToFront();
-						tableau6->cards.back()->SetCardOpen(true);
-						tableau6->cards.back()->SetCardPicture(tableau6->cards.back()->GetValue(),tableau6->cards.back()->GetCardOpen());
+						tableau0->cards.back()->SetCardOpen(true);
+						tableau0->cards.back()->SetCardPicture(tableau0->cards.back()->GetValue(),tableau0->cards.back()->GetCardOpen());
 						tableau6->RemoveCard();
 					}
 
@@ -846,8 +846,8 @@ void __fastcall Card::OnMouseUp(TObject *Sender, TMouseButton Button, TShiftStat
 						tableau6->cards.back()->SetParentStack(form->foundationStacks[1]);
 						form->foundationStacks[1]->AddCard(tableau6->cards.back());
 						tableau6->cards.back()->BringToFront();
-						tableau6->cards.back()->SetCardOpen(true);
-						tableau6->cards.back()->SetCardPicture(tableau6->cards.back()->GetValue(),tableau6->cards.back()->GetCardOpen());
+						tableau0->cards.back()->SetCardOpen(true);
+						tableau0->cards.back()->SetCardPicture(tableau0->cards.back()->GetValue(),tableau0->cards.back()->GetCardOpen());
 						tableau6->RemoveCard();
 					}
 
@@ -855,8 +855,8 @@ void __fastcall Card::OnMouseUp(TObject *Sender, TMouseButton Button, TShiftStat
 						tableau6->cards.back()->SetParentStack(form->foundationStacks[2]);
 						form->foundationStacks[2]->AddCard(tableau6->cards.back());
 						tableau6->cards.back()->BringToFront();
-						tableau6->cards.back()->SetCardOpen(true);
-						tableau6->cards.back()->SetCardPicture(tableau6->cards.back()->GetValue(),tableau6->cards.back()->GetCardOpen());
+						tableau0->cards.back()->SetCardOpen(true);
+						tableau0->cards.back()->SetCardPicture(tableau0->cards.back()->GetValue(),tableau0->cards.back()->GetCardOpen());
 						tableau6->RemoveCard();
 					}
 
@@ -864,8 +864,8 @@ void __fastcall Card::OnMouseUp(TObject *Sender, TMouseButton Button, TShiftStat
 						tableau6->cards.back()->SetParentStack(form->foundationStacks[3]);
 						form->foundationStacks[3]->AddCard(tableau6->cards.back());
 						tableau6->cards.back()->BringToFront();
-						tableau6->cards.back()->SetCardOpen(true);
-						tableau6->cards.back()->SetCardPicture(tableau6->cards.back()->GetValue(),tableau6->cards.back()->GetCardOpen());
+                        tableau0->cards.back()->SetCardOpen(true);
+						tableau0->cards.back()->SetCardPicture(tableau0->cards.back()->GetValue(),tableau0->cards.back()->GetCardOpen());
 						tableau6->RemoveCard();
 					}
 					else {
