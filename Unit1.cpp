@@ -9,6 +9,7 @@
 #include "Unit4.h"
 #include "Unit5.h"
 #include "Unit6.h"
+#include "Unit7.h"
 //---------------------------------------------------------------------------
 #pragma package(smart_init)
 #pragma resource "*.dfm"
@@ -23,16 +24,16 @@ __fastcall TForm1::TForm1(TComponent* Owner)
 
 void __fastcall TForm1::N9Click(TObject *Sender)
 {
-	PlayOrStop(gameOpen,false);
+	ManageTimer(true);
 	Form2->ShowModal();
 }
 //---------------------------------------------------------------------------
 
 void __fastcall TForm1::N10Click(TObject *Sender)
 {
-	PlayOrStop(gameOpen,false);
+	ManageTimer(true);
 	Form3->ShowModal();
-    ProcessModalFormResult(Form3->ModalResult);
+    ProcessModalFormResultForForm3(Form3->ModalResult);
 }
 //---------------------------------------------------------------------------
 
@@ -44,42 +45,68 @@ void __fastcall TForm1::N11Click(TObject *Sender)
 
 void __fastcall TForm1::N13Click(TObject *Sender)
 {
-	PlayOrStop(gameOpen,false);
+	ManageTimer(true);
 	Form4->ShowModal();
 }
 //---------------------------------------------------------------------------
 
 void __fastcall TForm1::N14Click(TObject *Sender)
 {
-	PlayOrStop(gameOpen,false);
+	ManageTimer(true);
 	Form5->ShowModal();
 }
 //---------------------------------------------------------------------------
 
 void __fastcall TForm1::N15Click(TObject *Sender)
 {
-	PlayOrStop(gameOpen,false);
+	ManageTimer(true);
 	Form6->ShowModal();
 }
 //---------------------------------------------------------------------------
 
 void __fastcall TForm1::Image1Click(TObject *Sender)
 {
-	PlayOrStop(gameOpen,false);
+	ManageTimer(true);
 	Form2->ShowModal();
 }
 //---------------------------------------------------------------------------
 
 void __fastcall TForm1::Image2Click(TObject *Sender)
 {
-	PlayOrStop(gameOpen,false);
+	ManageTimer(true);
 	RegisterOrOpenStatistics(N10->Enabled, Form3, Form4);
 }
 //---------------------------------------------------------------------------
 
 void __fastcall TForm1::Image3Click(TObject *Sender)
 {
-	PlayOrStop(gameOpen,true);
+	ManageTimer();
+}
+//---------------------------------------------------------------------------
+
+void __fastcall TForm1::Image3MouseEnter(TObject *Sender)
+{
+	if (pause) {
+		Image3->Picture->LoadFromFile("resources/images/playstroke60x60.png");
+
+	}
+	else {
+		Image3->Picture->LoadFromFile("resources/images/pausestroke60x60.png");
+	}
+	image3MouseEnter = true;
+
+}
+//---------------------------------------------------------------------------
+
+void __fastcall TForm1::Image3MouseLeave(TObject *Sender)
+{
+	if (pause) {
+		Image3->Picture->LoadFromFile("resources/images/play60x60.png");
+	}
+	else {
+		Image3->Picture->LoadFromFile("resources/images/pause60x60.png");
+	}
+	image3MouseEnter = false;
 }
 //---------------------------------------------------------------------------
 
@@ -95,15 +122,30 @@ void __fastcall TForm1::Image2MouseEnter(TObject *Sender)
 }
 //---------------------------------------------------------------------------
 
-void __fastcall TForm1::Image3MouseEnter(TObject *Sender)
-{
-	if (pause) {
-		Image3->Picture->LoadFromFile("resources/images/playstroke60x60.png");
+void TForm1::ProcessModalFormResultForForm3(TModalResult result){
+		if (result==mrYes) {
+			N10->Enabled=false;
+			N11->Enabled=true;
+			N13->Enabled=true;
+		}
+}
+//---------------------------------------------------------------------------
+
+void TForm1::LogoutAccount(){
+	N10->Enabled=true;
+	N11->Enabled=false;
+	N13->Enabled=false;
+}
+//---------------------------------------------------------------------------
+
+void TForm1::RegisterOrOpenStatistics (bool N10Enabled,  TForm* Form3, TForm* Form4){
+	if (N10Enabled) {
+		Form3->ShowModal();
+		ProcessModalFormResultForForm3(Form3->ModalResult);
 	}
 	else {
-		Image3->Picture->LoadFromFile("resources/images/pausestroke60x60.png");
+		Form4->ShowModal();
 	}
-
 }
 //---------------------------------------------------------------------------
 
@@ -119,27 +161,16 @@ void __fastcall TForm1::Image2MouseLeave(TObject *Sender)
 }
 //---------------------------------------------------------------------------
 
-void __fastcall TForm1::Image3MouseLeave(TObject *Sender)
+void __fastcall TForm1::Button2Click(TObject *Sender)
 {
-	if (pause) {
-		Image3->Picture->LoadFromFile("resources/images/play60x60.png");
-	}
-	else {
-		Image3->Picture->LoadFromFile("resources/images/pause60x60.png");
-	}
+	Close();
 }
 //---------------------------------------------------------------------------
 
 void __fastcall TForm1::Button1Click(TObject *Sender)
 {
-	Play();
+	PrepareFormForGame();
 	AddStacksAndCards();
-}
-//---------------------------------------------------------------------------
-
-void __fastcall TForm1::Button2Click(TObject *Sender)
-{
-	Close();
 }
 //---------------------------------------------------------------------------
 
@@ -161,131 +192,101 @@ void __fastcall TForm1::FormClose(TObject *Sender, TCloseAction &Action)
 
 void __fastcall TForm1::N4Click(TObject *Sender)
 {
-    if (gameOpen) {
+	if (gameOpen) {
 		DeleteStacksAndCards();
 	}
-    Play();
-	AddStacksAndCards();
+	PrepareFormForGame();
+    AddStacksAndCards();
 }
 //---------------------------------------------------------------------------
 
-// my
+void TForm1::PrepareFormForGame(){
 
-void TForm1::ProcessModalFormResult(TModalResult result){
-		if (result==mrYes) {
-		N10->Enabled=false;
-		N11->Enabled=true;
-		N13->Enabled=true;
-		}
-}
-//---------------------------------------------------------------------------
-
-void TForm1::LogoutAccount(){
-	N10->Enabled=true;
-	N11->Enabled=false;
-	N13->Enabled=false;
-}
-//---------------------------------------------------------------------------
-
-void TForm1::RegisterOrOpenStatistics (bool N10Enabled,  TForm* Form3, TForm* Form4){
-	if (N10Enabled) {
-		Form3->ShowModal();
-		ProcessModalFormResult(Form3->ModalResult);
-	}
-	else {
-		Form4->ShowModal();
-	}
-}
-//---------------------------------------------------------------------------
-
-void TForm1::Play(){
-
+	N5->Enabled=false;
+	N7->Enabled=false;
 	Button1->Visible=false;
 	Button2->Visible=false;
 	Image3->Visible=true;
+    Image4->Visible=false;
 	Label1->Visible=true;
+	Label1->Caption="0";
+	Timer1->Enabled=false;
+	seconds = 0;
 	gameOpen = true;
+	gameOver = false;
+	firstMoveIsMade = false;
+	pause = true;
+	if (image3MouseEnter) {
+		Image3->Picture->LoadFromFile("resources/images/playstroke60x60.png");
+	}
+	else {
+        Image3->Picture->LoadFromFile("resources/images/play60x60.png");
+	}
 }
 //---------------------------------------------------------------------------
 
-void TForm1::PlayOrStop(bool gameOpen, bool I3){
-		if (gameOpen) {
-			if (pause && I3) {
-				Image3->Picture->LoadFromFile("resources/images/pausestroke60x60.png");
-				Timer1->Enabled=true;
+void TForm1::ManageTimer(bool anotherFormIsOpen) {
+	if (gameOpen) {
+		if (gameOver) {
+            pause = true;
+			Timer1->Enabled=false;
+			Image3->Picture->LoadFromFile("resources/images/play60x60.png");
+			Form7->ShowModal();
+		}
+
+		else if (anotherFormIsOpen) {
+			pause = true;
+			Timer1->Enabled=false;
+			Image3->Picture->LoadFromFile("resources/images/play60x60.png");
+		}
+
+		else if (firstMoveIsMade) {
+			pause = false;
+			Timer1->Enabled=true;
+			Image3->Picture->LoadFromFile("resources/images/pausestroke60x60.png");
+			N5->Enabled=true;
+			N7->Enabled=true;
+			firstMoveIsMade = false;
+		}
+
+		else {
+			String stroke = "";
+			if (image3MouseEnter) {
+                stroke = "stroke";
+			}
+
+			if (pause) {
 				pause = false;
+				Timer1->Enabled=true;
+
+				Image3->Picture->LoadFromFile("resources/images/pause"+stroke+"60x60.png");
+
 			}
-			else if (!pause){
-				Image3->Picture->LoadFromFile("resources/images/playstroke60x60.png");
+			else {
+                pause = true;
 				Timer1->Enabled=false;
-				pause = true;
-
-			}
-		}
-}
-//---------------------------------------------------------------------------
-
-
-void __fastcall TForm1::FormMouseUp(TObject *Sender, TMouseButton Button, TShiftState Shift,
-		  int X, int Y)
-{
-	if (Button == mbRight) {
-        ChangeCardsStacksByRightClick();
-	}
-}
-//---------------------------------------------------------------------------
-
-void TForm1::AddStacksAndCards(){
-	stock = new Stock(0,130,5,this);
-	waste = new Waste(1,281,5,this);
-	for (int stackNum = 0; stackNum < 4; ++stackNum) {
-		foundationStacks.push_back(new Foundation(stackNum+2,583+151*stackNum,5,this));
-	}
-	for (int stackNum = 0; stackNum < 7; ++stackNum) {
-		tableauStacks.push_back(new Tableau (stackNum+6,130+151*stackNum,160,this));
-	}
-	std::vector<int> cardValues;
-	for (int i = 0; i < 52; ++i) {
-		cardValues.push_back(i+1);
-	}
-	std::random_device rd;
-	std::mt19937 g(static_cast<unsigned>(std::chrono::system_clock::now().time_since_epoch().count()));
-	std::shuffle(cardValues.begin(), cardValues.end(), g);
-	int cardCounter = 0;
-
-	for (int stackNum = 0; stackNum < 7; ++stackNum) {
-		for (int numOfCards = 0; numOfCards < stackNum+1; numOfCards++) {
-			if (numOfCards != stackNum) {
-				tableauStacks[stackNum]->AddCardsAtStart(new Card(cardValues[cardCounter++],
-					false,tableauStacks[stackNum],this));
-			}
-			else{
-				tableauStacks[stackNum]->AddCardsAtStart(new Card(cardValues[cardCounter++],
-					true,tableauStacks[stackNum],this));
+				Image3->Picture->LoadFromFile("resources/images/play"+stroke+"60x60.png");
 			}
 		}
 	}
-
-    for (int carNum = cardCounter; carNum < cardValues.size(); ++carNum) {
-		stock->AddCard(new Card(cardValues[cardCounter++],
-			false,stock,this));
-	}
 }
 //---------------------------------------------------------------------------
 
-void TForm1::DeleteStacksAndCards(){
-	delete stock;
-	delete waste;
-	for (int stackNum = 0; stackNum < 4; ++stackNum) {
-		delete foundationStacks[stackNum];
-	}
-	foundationStacks.clear();
+void TForm1::PlayOrStop(){    //delete?
+	if (gameOpen) {
+		if (pause) {
+			Image3->Picture->LoadFromFile("resources/images/pausestroke60x60.png");
+			Timer1->Enabled=true;
+			pause = false;
+		}
+		else if (!pause){
+			Image3->Picture->LoadFromFile("resources/images/playstroke60x60.png");
+			Timer1->Enabled=false;
+			pause = true;
 
-	for (int stackNum = 0; stackNum < 7; ++stackNum) {
-		delete tableauStacks[stackNum];
+		}
 	}
-	tableauStacks.clear();
-};
+}
 //---------------------------------------------------------------------------
 
 void TForm1::ChangeCardsStacksByRightClick() {
@@ -630,3 +631,81 @@ void TForm1::ChangeCardsStacksByRightClick() {
 	}
 }
 //---------------------------------------------------------------------------
+
+void __fastcall TForm1::FormMouseUp(TObject *Sender, TMouseButton Button, TShiftState Shift,
+		  int X, int Y)
+{
+	if (Button == mbRight) {
+		ChangeCardsStacksByRightClick();
+	}
+}
+//---------------------------------------------------------------------------
+
+void TForm1::AddStacksAndCards(){
+	stock = new Stock(0,130,5,this);
+	waste = new Waste(1,281,5,this);
+	for (int stackNum = 0; stackNum < 4; ++stackNum) {
+		foundationStacks.push_back(new Foundation(stackNum+2,583+151*stackNum,5,this));
+	}
+	for (int stackNum = 0; stackNum < 7; ++stackNum) {
+		tableauStacks.push_back(new Tableau (stackNum+6,130+151*stackNum,160,this));
+	}
+	std::vector<int> cardValues;
+	for (int i = 0; i < 52; ++i) {
+		cardValues.push_back(i+1);
+	}
+	std::random_device rd;
+	std::mt19937 g(static_cast<unsigned>(std::chrono::system_clock::now().time_since_epoch().count()));
+	std::shuffle(cardValues.begin(), cardValues.end(), g);
+	int cardCounter = 0;
+
+	for (int stackNum = 0; stackNum < 7; ++stackNum) {
+		for (int numOfCards = 0; numOfCards < stackNum+1; numOfCards++) {
+			if (numOfCards != stackNum) {
+				tableauStacks[stackNum]->AddCardsAtStart(new Card(cardValues[cardCounter++],
+					false,tableauStacks[stackNum],this));
+			}
+			else{
+				tableauStacks[stackNum]->AddCardsAtStart(new Card(cardValues[cardCounter++],
+					true,tableauStacks[stackNum],this));
+			}
+		}
+	}
+
+	for (int carNum = cardCounter; carNum < cardValues.size(); ++carNum) {
+		stock->AddCard(new Card(cardValues[cardCounter++],
+			false,stock,this));
+	}
+}
+//---------------------------------------------------------------------------
+
+void TForm1::DeleteStacksAndCards(){
+	delete stock;
+	delete waste;
+	for (int stackNum = 0; stackNum < 4; ++stackNum) {
+		delete foundationStacks[stackNum];
+	}
+	foundationStacks.clear();
+
+	for (int stackNum = 0; stackNum < 7; ++stackNum) {
+		delete tableauStacks[stackNum];
+	}
+	tableauStacks.clear();
+};
+//---------------------------------------------------------------------------
+
+void __fastcall TForm1::FormKeyDown(TObject *Sender, WORD &Key, TShiftState Shift)
+
+{
+	if (Key == VK_SPACE)
+	{
+		ManageTimer();
+	}
+}
+//---------------------------------------------------------------------------
+void __fastcall TForm1::Button3Click(TObject *Sender)
+{
+    Form7->ShowModal();
+}
+//---------------------------------------------------------------------------
+

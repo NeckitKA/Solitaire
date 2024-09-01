@@ -17,19 +17,9 @@ __published:	// IDE-managed Components
 	void __fastcall Memo1ContextPopup(TObject *Sender, TPoint &MousePos, bool &Handled);
 
 private:	// User declarations
-	void OutputUserManualToMemo(){
-		std::ifstream usermanual("resources/texts/usermanual.txt");
-		if (usermanual.is_open()) {
-			std::string line;
-			while (std::getline(usermanual, line)) {
-				Memo1->Lines->Add(line.c_str());
-			}
-			usermanual.close();
-		}
-		else {
-            Memo1->Lines->Add("Файл usermanual.txt не найден");
-		}
-	}
+
+	void OutputUserManualToMemo();
+
 public:		// User declarations
 	__fastcall TForm5(TComponent* Owner);
 };

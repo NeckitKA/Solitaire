@@ -26,3 +26,18 @@ void __fastcall TForm5::Memo1ContextPopup(TObject *Sender, TPoint &MousePos, boo
     Handled = true;
 }
 //---------------------------------------------------------------------------
+
+void TForm5::OutputUserManualToMemo(){
+	std::ifstream usermanual("resources/texts/usermanual.txt");
+	if (usermanual.is_open()) {
+		std::string line;
+		while (std::getline(usermanual, line)) {
+			Memo1->Lines->Add(line.c_str());
+		}
+		usermanual.close();
+	}
+	else {
+		Memo1->Lines->Add("Файл usermanual.txt не найден");
+	}
+}
+//---------------------------------------------------------------------------

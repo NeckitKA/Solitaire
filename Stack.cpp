@@ -100,8 +100,6 @@ void  Stack::SetTopCardYPosition() {
 }
 //---------------------------------------------------------------------------
 
-
-
 void Stack::SendToBack() {
 	if (stack) {
 		stack->SendToBack();

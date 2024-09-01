@@ -19,7 +19,7 @@ Card::Card(int v, bool cardOpen, Stack* parentStack, TForm* parentForm) {
 	SetParentForm(parentForm);
 	card = new TImage(GetParentForm());
 
-	SetParentStack(parentStack);
+	SetParentStack(parentStack, false);
 	SetValue(v);
 	SetCardOpen(cardOpen);
 	SetCardPicture(GetValue(),GetCardOpen());
@@ -36,11 +36,6 @@ Card::Card(int v, bool cardOpen, Stack* parentStack, TForm* parentForm) {
 }
 //---------------------------------------------------------------------------
 
-int Card::GetValue() const{
-	return value;
-}
-//---------------------------------------------------------------------------
-
 int Card::GetX() const{
 	return xPos;
 }
@@ -48,6 +43,11 @@ int Card::GetX() const{
 
 int Card::GetY() const{
 	return yPos;
+}
+//---------------------------------------------------------------------------
+
+int Card::GetValue() const{
+	return value;
 }
 //---------------------------------------------------------------------------
 
@@ -86,6 +86,11 @@ Stack* Card::GetParentStack() const {
 }
 //---------------------------------------------------------------------------
 
+int Card::GetCardNumInStack() const {
+	return cardNumInStack;
+}
+//---------------------------------------------------------------------------
+
 int Card::GetNewParentStackNum() const {
 	return newParentStackNum;
 }
@@ -93,29 +98,6 @@ int Card::GetNewParentStackNum() const {
 
 TForm* Card::GetParentForm() const {
 	return parentForm;
-}
-//---------------------------------------------------------------------------
-
-int Card::GetCardNumInStack() const {
-	return cardNumInStack;
-}
-
-void Card::SetParentStack(Stack* stack) {
-	parentStack = stack;
-	if (6<=stack->GetStackNumber()) {
-		Tableau* curStack = dynamic_cast<Tableau*>(stack);
-		curStack->SetTopCardYPos();
-	}
-	SetCardNumInStack(stack->cards.size());
-	SetStartX(stack->GetTopCardXPosition());
-	SetStartY(stack->GetTopCardYPosition());
-	SetX(stack->GetTopCardXPosition());
-	SetY(stack->GetTopCardYPosition());
-}
-//---------------------------------------------------------------------------
-
-void Card::SetValue(int v){
-	value = v;
 }
 //---------------------------------------------------------------------------
 
@@ -133,6 +115,11 @@ void Card::SetY(int y) {
 		card->Top = y;
 		SetTop(y);
 	}
+}
+//---------------------------------------------------------------------------
+
+void Card::SetValue(int v){
+	value = v;
 }
 //---------------------------------------------------------------------------
 
@@ -159,7 +146,8 @@ void Card::SetCardPicture(int v, bool cardOpen) {
 	if (card)
 	{
 		if (cardOpen) {
-			card->Picture->LoadFromFile("resources/images/deck/" + IntToStr(v) +".png");
+			card->Picture->LoadFromFile("resources/images/deck/"+IntToStr(v)+
+			  ".png");
 		}
 		else {
 			card->Picture->LoadFromFile("resources/images/deck/card_back.png");
@@ -183,8 +171,30 @@ void Card::SetCardInStackArea(bool InStackArea) {
 }
 //---------------------------------------------------------------------------
 
-void Card::SetParentForm(TForm* form) {
-	parentForm = form;
+void Card::SetParentStack(Stack* stack, bool manageTimer) {
+	parentStack = stack;
+	if (6<=stack->GetStackNumber()) {
+		Tableau* currentStack = dynamic_cast<Tableau*>(stack);
+		currentStack->SetTopCardYPos();
+	}
+	SetCardNumInStack(stack->cards.size());
+	SetStartX(stack->GetTopCardXPosition());
+	SetStartY(stack->GetTopCardYPosition());
+	SetX(stack->GetTopCardXPosition());
+	SetY(stack->GetTopCardYPosition());
+
+	TForm1* form = dynamic_cast<TForm1*>(GetParentForm());
+	if (manageTimer) {
+        form->firstMoveIsMade = true;
+		form->ManageTimer();
+	}
+
+
+}
+//---------------------------------------------------------------------------
+
+void Card::SetCardNumInStack(int cardNum){
+	cardNumInStack = cardNum;
 }
 //---------------------------------------------------------------------------
 
@@ -193,8 +203,8 @@ void Card::SetNewParentStackNum(int stackNum) {
 }
 //---------------------------------------------------------------------------
 
-void Card::SetCardNumInStack(int cardNum){
-	cardNumInStack = cardNum;
+void Card::SetParentForm(TForm* form) {
+	parentForm = form;
 }
 //---------------------------------------------------------------------------
 
@@ -222,10 +232,13 @@ void __fastcall Card::OnMouseDown(TObject *Sender, TMouseButton Button, TShiftSt
 			if (GetCardOpen()) {
 				BringToFront();
 
-				if (6<=GetParentStack()->GetStackNumber() && GetValue()!=GetParentStack()->cards.back()->GetValue()) {
-					Tableau* tableau = form->tableauStacks[GetParentStack()->GetStackNumber()-6];
+				if (6<=GetParentStack()->GetStackNumber() &&
+				 GetValue()!=GetParentStack()->cards.back()->GetValue()) {
 
-					for (int cardNum = GetCardNumInStack(); cardNum < tableau->cards.size(); ++cardNum) {
+					Tableau*tableau=
+					  form->tableauStacks[GetParentStack()->GetStackNumber()-6];
+
+					for (int cardNum=GetCardNumInStack();cardNum<tableau->cards.size();++cardNum) {
 						if (tableau->cards[cardNum]->GetCardOpen() && tableau->cards[cardNum]->GetValue()!=GetValue()) {
 							tableau->cards[cardNum]->SetX(card->Left+(X-(card->Width-2)/2));
 							tableau->cards[cardNum]->SetY(card->Top+Y+24*(tableau->cards[cardNum]->GetCardNumInStack()-GetCardNumInStack()));
@@ -245,7 +258,7 @@ void __fastcall Card::OnMouseDown(TObject *Sender, TMouseButton Button, TShiftSt
 
 void __fastcall Card::OnMouseUp(TObject *Sender, TMouseButton Button, TShiftState Shift,
 		  int X, int Y) {
-    TForm1* form = dynamic_cast<TForm1*>(GetParentForm());
+	TForm1* form = dynamic_cast<TForm1*>(GetParentForm());
 	for (int foundationNum = 2; foundationNum < 6; ++foundationNum) {
 
 		int foundationTopCardX = form->foundationStacks[foundationNum-2]->GetTopCardXPosition();
@@ -316,6 +329,7 @@ void __fastcall Card::OnMouseUp(TObject *Sender, TMouseButton Button, TShiftStat
 						GetParentStack()->cards[cardNum]->SetCardInStackArea(false);
 						GetParentStack()->cards[cardNum]->SetCardDragging(false);
 					}
+
 				}
 
 			}

@@ -1,5 +1,5 @@
 .\Win64\Debug\Unit1.o: \
-  D:\win10\My\istb\1\ курс\2\ семестр\C++\курсач\Meme\ solitaire\GOALPCH1.h \
+  D:\win10\My\istb\1\ курс\2\ семестр\C++\курсач\Meme\ solitaire\SolitarePCH1.h \
   c:\program\ files\ (x86)\embarcadero\studio\23.0\include\windows\vcl\vcl.h \
   c:\program\ files\ (x86)\embarcadero\studio\23.0\include\windows\vcl\basepch0.h \
   c:\program\ files\ (x86)\embarcadero\studio\23.0\include\windows\rtl\System.hpp \
@@ -378,4 +378,5 @@
   c:\program\ files\ (x86)\embarcadero\studio\23.0\include\dinkumware64\list \
   D:\win10\My\istb\1\ курс\2\ семестр\C++\курсач\Meme\ solitaire/Unit4.h \
   D:\win10\My\istb\1\ курс\2\ семестр\C++\курсач\Meme\ solitaire/Unit5.h \
-  D:\win10\My\istb\1\ курс\2\ семестр\C++\курсач\Meme\ solitaire/Unit6.h
+  D:\win10\My\istb\1\ курс\2\ семестр\C++\курсач\Meme\ solitaire/Unit6.h \
+  D:\win10\My\istb\1\ курс\2\ семестр\C++\курсач\Meme\ solitaire/Unit7.h

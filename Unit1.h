@@ -50,7 +50,10 @@ __published:	// IDE-managed Components
 	TImage *Image1;
 	TImage *Image2;
 	TImage *Image3;
+	TImage *Image4;
+	TButton *Button3;
 
+	void __fastcall N4Click(TObject *Sender);
 	void __fastcall N9Click(TObject *Sender);
 	void __fastcall N10Click(TObject *Sender);
 	void __fastcall N11Click(TObject *Sender);
@@ -70,30 +73,42 @@ __published:	// IDE-managed Components
 	void __fastcall Button2Click(TObject *Sender);
 	void __fastcall Timer1Timer(TObject *Sender);
 	void __fastcall FormClose(TObject *Sender, TCloseAction &Action);
-	void __fastcall N4Click(TObject *Sender);
 	void __fastcall FormMouseUp(TObject *Sender, TMouseButton Button, TShiftState Shift,
-          int X, int Y);
+		  int X, int Y);
+	void __fastcall FormKeyDown(TObject *Sender, WORD &Key, TShiftState Shift);
+	void __fastcall Button3Click(TObject *Sender);
 
 private:	// User declarations
 
-	float seconds = 0;
-	bool pause = true, gameOpen = false;
 
-	void Play();
+
+	bool image3MouseEnter = false;
+	bool pause = true;
+
+
 	void LogoutAccount();
-	void PlayOrStop(bool gameOpen, bool I3);
-	void ProcessModalFormResult(TModalResult result);
+
+	void PlayOrStop();
+	void ProcessModalFormResultForForm3(TModalResult result);
 	void RegisterOrOpenStatistics (bool N10Enabled,  TForm* Form3, TForm* Form4);
-	void AddStacksAndCards();
-	void DeleteStacksAndCards();
+
 
 public:		// User declarations
 	__fastcall TForm1(TComponent* Owner);
-    Stock* stock;
+    float seconds = 0;
+	bool firstMoveIsMade;
+    bool gameOpen = false;
+	bool gameOver;
+	Stock* stock;
 	Waste* waste;
 	std::vector<Foundation*> foundationStacks;
 	std::vector<Tableau*> tableauStacks;
-    void ChangeCardsStacksByRightClick();
+	void ChangeCardsStacksByRightClick();
+	void PrepareFormForGame();
+	void AddStacksAndCards();
+	void DeleteStacksAndCards();
+	void ManageTimer(bool anotherFormIsOpen = false);
+
 };
 //---------------------------------------------------------------------------
 extern PACKAGE TForm1 *Form1;

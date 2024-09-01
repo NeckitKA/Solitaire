@@ -5,7 +5,7 @@ object Form4: TForm4
   Caption = #1057#1090#1072#1090#1080#1089#1090#1080#1082#1072
   ClientHeight = 576
   ClientWidth = 324
-  Color = clGreen
+  Color = clMenu
   Font.Charset = DEFAULT_CHARSET
   Font.Color = clWindowText
   Font.Height = -12

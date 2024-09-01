@@ -1,5 +1,5 @@
 .\Win64\Debug\Foundation.o: \
-  D:\win10\My\istb\1\ курс\2\ семестр\C++\курсач\Meme\ solitaire\GOALPCH1.h \
+  D:\win10\My\istb\1\ курс\2\ семестр\C++\курсач\Meme\ solitaire\SolitarePCH1.h \
   c:\program\ files\ (x86)\embarcadero\studio\23.0\include\windows\vcl\vcl.h \
   c:\program\ files\ (x86)\embarcadero\studio\23.0\include\windows\vcl\basepch0.h \
   c:\program\ files\ (x86)\embarcadero\studio\23.0\include\windows\rtl\System.hpp \
@@ -349,4 +349,19 @@
   D:\win10\My\istb\1\ курс\2\ семестр\C++\курсач\Meme\ solitaire/Foundation.h \
   D:\win10\My\istb\1\ курс\2\ семестр\C++\курсач\Meme\ solitaire/Stack.h \
   D:\win10\My\istb\1\ курс\2\ семестр\C++\курсач\Meme\ solitaire/Card.h \
-  c:\program\ files\ (x86)\embarcadero\studio\23.0\include\dinkumware64\vector
+  c:\program\ files\ (x86)\embarcadero\studio\23.0\include\dinkumware64\vector \
+  D:\win10\My\istb\1\ курс\2\ семестр\C++\курсач\Meme\ solitaire/Unit1.h \
+  c:\program\ files\ (x86)\embarcadero\studio\23.0\include\windows\vcl\Vcl.Buttons.hpp \
+  c:\program\ files\ (x86)\embarcadero\studio\23.0\include\windows\vcl\Vcl.Imaging.pngimage.hpp \
+  c:\program\ files\ (x86)\embarcadero\studio\23.0\include\windows\rtl\System.ZLib.hpp \
+  c:\program\ files\ (x86)\embarcadero\studio\23.0\include\windows\vcl\Vcl.Imaging.pnglang.hpp \
+  c:\program\ files\ (x86)\embarcadero\studio\23.0\include\dinkumware64\chrono \
+  c:\program\ files\ (x86)\embarcadero\studio\23.0\include\dinkumware64\ratio \
+  c:\program\ files\ (x86)\embarcadero\studio\23.0\include\dinkumware64\Dinkum/threads/xtimec.h \
+  c:\program\ files\ (x86)\embarcadero\studio\23.0\include\dinkumware64\Dinkum/threads/xthrcommon.h \
+  c:\program\ files\ (x86)\embarcadero\studio\23.0\include\dinkumware64\algorithm \
+  c:\program\ files\ (x86)\embarcadero\studio\23.0\include\dinkumware64\xheap \
+  c:\program\ files\ (x86)\embarcadero\studio\23.0\include\dinkumware64\random \
+  D:\win10\My\istb\1\ курс\2\ семестр\C++\курсач\Meme\ solitaire/Stock.h \
+  D:\win10\My\istb\1\ курс\2\ семестр\C++\курсач\Meme\ solitaire/Waste.h \
+  D:\win10\My\istb\1\ курс\2\ семестр\C++\курсач\Meme\ solitaire/Tableau.h

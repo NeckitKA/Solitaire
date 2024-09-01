@@ -12,68 +12,31 @@
 class TForm3 : public TForm
 {
 __published:	// IDE-managed Components
-	TButton *Button1;
-	TButton *Button2;
-    TButton *Button3;
-	TButton *Button4;
-	TButton *Button5;
-	TLabel *Label1;
+    TEdit *Edit1;
+	TEdit *Edit2;
+    TLabel *Label1;
 	TLabel *Label2;
 	TLabel *Label3;
-	TEdit *Edit1;
-	TEdit *Edit2;
+	TButton *Button1;
+	TButton *Button2;
+	TButton *Button3;
+	TButton *Button4;
+	TButton *Button5;
 	void __fastcall Button1Click(TObject *Sender);
 	void __fastcall Button2Click(TObject *Sender);
 	void __fastcall Button3Click(TObject *Sender);
 	void __fastcall Button4Click(TObject *Sender);
 	void __fastcall Button5Click(TObject *Sender);
+	void __fastcall FormClose(TObject *Sender, TCloseAction &Action);
 private:	// User declarations
 
-	void Login(){
-		Button1->Visible=false;
-		Button2->Visible=false;
-		Button3->Visible=true;
-		Button4->Visible=false;
-		Button5->Visible=true;
-
-		Edit1->Visible=true;
-		Edit2->Visible=true;
-
-		Label1->Visible=true;
-		Label2->Visible=true;
-	}
-
-	void Register(){
-        Button1->Visible=false;
-		Button2->Visible=false;
-		Button3->Visible=false;
-		Button4->Visible=true;
-		Button5->Visible=true;
-
-		Edit1->Visible=true;
-		Edit2->Visible=true;
-
-		Label1->Visible=true;
-		Label2->Visible=true;
-	}
-
-	void CancelLoginOrRegistration(){
-		Button1->Visible=true;
-		Button2->Visible=true;
-		Button3->Visible=false;
-		Button4->Visible=false;
-        Button5->Visible=false;
-
-		Edit1->Visible=false;
-		Edit2->Visible=false;
-
-		Edit1->Text="";
-		Edit2->Text="";
-
-		Label1->Visible=false;
-		Label2->Visible=false;
-		Label3->Visible=false;
-	}
+	void Login();
+	void Register();
+	void loginCompleted();
+	void CancelLoginOrRegistration();
+	void GetUserData(String username, String password);
+	void SaveUserData(UnicodeString username, UnicodeString password);
+	int findUser(UnicodeString username);
 
 	//ios::in — открыть файл в режиме чтения данных; режим является режимом по умолчанию для потоков ifstream;
 	//ios::out — открыть файл в режиме записи данных (при этом информация о существующем файле уничтожается); режим является режимом по умолчанию для потоков ofstream;
@@ -86,100 +49,6 @@ private:	// User declarations
 	//ifstream прочитать
 	//ofstream записать
 	//fstream универсал
-	//проверь на открытие
-
-	int findUser(UnicodeString username){
-		std::ifstream credentials("data/Users/credentials.txt");
-		if (!credentials.is_open()) {
-			return 2;
-		}
-		std::string searchStr = "u:" + std::string(AnsiString(username).c_str()) + ";";
-		std::string line;
-		while (std::getline(credentials, line)) {
-			if (line.find(searchStr) != std::string::npos) {
-				credentials.close();
-				return 1;
-			}
-		}
-		credentials.close();
-		return 0;
-	}
-
-	void SaveUserData(UnicodeString username, UnicodeString password){
-		if (findUser(username)==0) {
-			std::ofstream credentials("data/Users/credentials.txt",ios::app);
-			if (credentials.is_open()) {
-				if (!username.IsEmpty() && !password.IsEmpty()) {
-					credentials << "u:" << AnsiString(username).c_str() << ";p:" << AnsiString(password).c_str() << ";\n";
-					credentials.close();
-                    loginCompleted();
-				}
-				else{
-					Label3->Visible=true;
-					Label3->Caption="Заполните все поля";
-				}
-			}
-			else {
-				Label3->Visible=true;
-				Label3->Caption="Файл credentials.txt недоступен";
-			}
-		}
-		else if (findUser(username)==2) {
-			Label3->Visible=true;
-			Label3->Caption="Файл credentials.txt недоступен";
-		}
-		else{
-			Label3->Visible=true;
-			Label3->Caption="Имя занято";
-		}
-	}
-
-	void GetUserData(String username, String password){
-		if (findUser(username)==1){
-            std::ifstream credentials("data/Users/credentials.txt");
-			if (!credentials.is_open()) {
-				Label3->Visible=true;
-				Label3->Caption="Файл credentials.txt недоступен";
-			}
-			else {
-				if (!username.IsEmpty() && !password.IsEmpty()){
-					std::string searchStr = "u:" + std::string(AnsiString(username).c_str()) + ";p:" + std::string(AnsiString(password).c_str()) + ";";
-					std::string line;
-					while (std::getline(credentials, line)) {
-						if (line.find(searchStr) != std::string::npos) {
-							Label3->Visible=true;
-							Label3->Caption="Вход выполнен";
-							credentials.close();
-                            loginCompleted();
-                            //сюда доработать выход в след функцию
-						}
-					}
-					credentials.close();
-				}
-				else{
-					Label3->Visible=true;
-					Label3->Caption="Заполните все поля";
-				}
-			}
-		}
-		else if (findUser(username)==2) {
-			Label3->Visible=true;
-			Label3->Caption="Файл credentials.txt недоступен";
-		}
-		else if (findUser(username)==0 && !username.IsEmpty() && !password.IsEmpty()) {
-			Label3->Visible=true;
-			Label3->Caption="Неправильное имя или пароль";
-		}
-		else{
-            Label3->Visible=true;
-			Label3->Caption="Заполните все поля";
-		}
-	}
-
-	void loginCompleted(){
-		CancelLoginOrRegistration();
-		this->ModalResult=mrYes;
-	}
 
 public:		// User declarations
 	__fastcall TForm3(TComponent* Owner);
