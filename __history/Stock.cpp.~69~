@@ -8,8 +8,8 @@
 #pragma package(smart_init)
 //---------------------------------------------------------------------------
 
-Stock::Stock(int n, int x, int y, TForm* parentForm)
-	: Stack(n, x, y, parentForm) {
+Stock::Stock(int n, int x, int y)
+	: Stack(n, x, y) {
 	GetTImage()->OnMouseDown = OnMouseDown;
 }
 //---------------------------------------------------------------------------

@@ -16,7 +16,7 @@
 
 Card::Card(int v, bool cardOpen, Stack* parentStack, TForm* parentForm) {
 
-	SetParentForm(parentForm);
+	SetParentForm(form);
 	card = new TImage(GetParentForm());
 
 	SetParentStack(parentStack, false);

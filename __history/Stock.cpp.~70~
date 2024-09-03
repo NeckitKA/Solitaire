@@ -9,7 +9,7 @@
 //---------------------------------------------------------------------------
 
 Stock::Stock(int n, int x, int y, TForm* parentForm)
-	: Stack(n, x, y, parentForm) {
+	: Stack(n, x, y) {
 	GetTImage()->OnMouseDown = OnMouseDown;
 }
 //---------------------------------------------------------------------------

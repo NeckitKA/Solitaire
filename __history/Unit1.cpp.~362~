@@ -643,8 +643,8 @@ void __fastcall TForm1::FormMouseUp(TObject *Sender, TMouseButton Button, TShift
 //---------------------------------------------------------------------------
 
 void TForm1::AddStacksAndCards(){
-	stock = new Stock(0,130,5,this);
-	waste = new Waste(1,281,5,this);
+	stock = new Stock(0,130,5);
+	waste = new Waste(1,281,5);
 	for (int stackNum = 0; stackNum < 4; ++stackNum) {
 		foundationStacks.push_back(new Foundation(stackNum+2,583+151*stackNum,5,this));
 	}
@@ -664,11 +664,11 @@ void TForm1::AddStacksAndCards(){
 		for (int numOfCards = 0; numOfCards < stackNum+1; numOfCards++) {
 			if (numOfCards != stackNum) {
 				tableauStacks[stackNum]->AddCardsAtStart(new Card(cardValues[cardCounter++],
-					false,tableauStacks[stackNum],this));
+					false,tableauStacks[stackNum]));
 			}
 			else{
 				tableauStacks[stackNum]->AddCardsAtStart(new Card(cardValues[cardCounter++],
-					true,tableauStacks[stackNum],this));
+					true,tableauStacks[stackNum]));
 			}
 		}
 	}

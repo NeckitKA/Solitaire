@@ -1,22 +1,15 @@
 //---------------------------------------------------------------------------
 
-#ifndef StockH
-#define StockH
+#ifndef WasteH
+#define WasteH
 //---------------------------------------------------------------------------
-#include <vector>
 #include "Stack.h"
 //---------------------------------------------------------------------------
-class Stock: public Stack {
+class Waste : public Stack {
 	public:
-		Stock(int n, int x, int y, TForm* parentForm);
-
-		Stock(const Stock& other);
-
+		Waste(int n, int x, int y, TForm* parentForm);
 		void AddCard(Card* card);
-		void RemoveCard();
-
-        void __fastcall OnMouseDown(TObject *Sender, TMouseButton Button, TShiftState Shift,
-		  int X, int Y);
+		void RemoveCard(int cardNumber);
 };
 //---------------------------------------------------------------------------
 #endif

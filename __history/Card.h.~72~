@@ -37,7 +37,7 @@ class Card{
 
 	public:
 
-		Card(int v, bool cardOpen, Stack* parentStack, TForm* parentForm);
+		Card(int v, bool cardOpen, Stack* parentStack);
 
 		Card(const Card& other);
 

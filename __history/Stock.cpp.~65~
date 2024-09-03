@@ -14,13 +14,6 @@ Stock::Stock(int n, int x, int y, TForm* parentForm)
 }
 //---------------------------------------------------------------------------
 
-Stock::Stock(const Stock& other)
-	: Stack(other)
-{
-    GetTImage()->OnMouseDown = OnMouseDown;
-}
-//---------------------------------------------------------------------------
-
 void Stock::AddCard(Card* card) {
 	cards.push_back(card);
 }
@@ -39,11 +32,11 @@ void __fastcall Stock::OnMouseDown(TObject *Sender, TMouseButton Button, TShiftS
 
 		int numOfCards  = form->waste->cards.size();
 		for (int cardNum = numOfCards - 1; cardNum >= 0; --cardNum) {
-			form->waste->cards[cardNum]->SetParentStack(form->stock);
 			form->waste->cards[cardNum]->SetCardOpen(false);
 			form->waste->cards[cardNum]->
 				SetCardPicture(form->waste->cards[cardNum]->GetValue(),
 					form->waste->cards[cardNum]->GetCardOpen());
+			form->waste->cards[cardNum]->SetParentStack(form->stock);
 			form->waste->cards[cardNum]->BringToFront();
 			AddCard(form->waste->cards[cardNum]);
 			form->waste->RemoveCard(cardNum);

@@ -10,6 +10,7 @@
 //---------------------------------------------------------------------------
 
 Stack::Stack(int n, int x, int y, TForm* parentForm){
+
 	 stack = new TImage(parentForm);
 
 	 stack->Width = 102;
@@ -34,7 +35,7 @@ Stack::Stack(int n, int x, int y, TForm* parentForm){
 
 Stack::Stack(const Stack& other) {
 
-	TForm1* form = dynamic_cast<TForm1*>(other.parentForm);   //вис€чие указатели
+	TForm1* form = dynamic_cast<TForm1*>(Application->MainForm);
 	int n=0;
 	if (!form->wasteGameSnapshots.empty()) {
 		n = form->wasteGameSnapshots.size();
@@ -57,7 +58,7 @@ Stack::Stack(const Stack& other) {
 
     stack->OnMouseDown = OnMouseDown;
 	if (!other.cards.empty()) {
-		for (Card* card : other.cards) {
+        for (Card* card : other.cards) {
 			cards.push_back(new Card(*card));
 		}
 	}

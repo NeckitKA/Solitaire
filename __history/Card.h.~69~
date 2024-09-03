@@ -41,8 +41,6 @@ class Card{
 
 		Card(const Card& other);
 
-        Card& operator=(const Card& other);
-
 		int GetTop() const;
 		int GetValue() const;
 		int GetStartX() const;
@@ -57,7 +55,6 @@ class Card{
 		void SetCardDragging(bool Dragging);
 		void SetCardPicture(int v, bool cardOpen);
 
-        void Show();
 		void BringToFront();
 
 		void __fastcall OnMouseDown(TObject *Sender, TMouseButton Button,

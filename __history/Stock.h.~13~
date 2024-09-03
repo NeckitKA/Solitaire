@@ -9,9 +9,6 @@
 class Stock: public Stack {
 	public:
 		Stock(int n, int x, int y, TForm* parentForm);
-
-		Stock(const Stock& other);
-
 		void AddCard(Card* card);
 		void RemoveCard();
 

@@ -41,8 +41,6 @@ class Card{
 
 		Card(const Card& other);
 
-        Card& operator=(const Card& other);
-
 		int GetTop() const;
 		int GetValue() const;
 		int GetStartX() const;

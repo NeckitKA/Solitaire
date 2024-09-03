@@ -643,40 +643,9 @@ void __fastcall TForm1::FormMouseUp(TObject *Sender, TMouseButton Button, TShift
 //---------------------------------------------------------------------------
 
 void TForm1::AddStacksAndCards(){
-	stock = new Stock(0,130,5,this);
-	waste = new Waste(1,281,5,this);
-	for (int stackNum = 0; stackNum < 4; ++stackNum) {
-		foundationStacks.push_back(new Foundation(stackNum+2,583+151*stackNum,5,this));
-	}
-	for (int stackNum = 0; stackNum < 7; ++stackNum) {
-		tableauStacks.push_back(new Tableau (stackNum+6,130+151*stackNum,160,this));
-	}
-	std::vector<int> cardValues;
-	for (int i = 0; i < 52; ++i) {
-		cardValues.push_back(i+1);
-	}
-	std::random_device rd;
-	std::mt19937 g(static_cast<unsigned>(std::chrono::system_clock::now().time_since_epoch().count()));
-	std::shuffle(cardValues.begin(), cardValues.end(), g);
-	int cardCounter = 0;
+	stock = new Stock(0,130,5);
+	waste = new Waste(1,281,5);
 
-	for (int stackNum = 0; stackNum < 7; ++stackNum) {
-		for (int numOfCards = 0; numOfCards < stackNum+1; numOfCards++) {
-			if (numOfCards != stackNum) {
-				tableauStacks[stackNum]->AddCardsAtStart(new Card(cardValues[cardCounter++],
-					false,tableauStacks[stackNum],this));
-			}
-			else{
-				tableauStacks[stackNum]->AddCardsAtStart(new Card(cardValues[cardCounter++],
-					true,tableauStacks[stackNum],this));
-			}
-		}
-	}
-
-	for (int carNum = cardCounter; carNum < cardValues.size(); ++carNum) {
-		stock->AddCard(new Card(cardValues[cardCounter++],
-			false,stock,this));
-	}
 }
 //---------------------------------------------------------------------------
 

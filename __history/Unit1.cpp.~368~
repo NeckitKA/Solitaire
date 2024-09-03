@@ -675,7 +675,7 @@ void TForm1::AddStacksAndCards(){
 
 	for (int carNum = cardCounter; carNum < cardValues.size(); ++carNum) {
 		stock->AddCard(new Card(cardValues[cardCounter++],
-			false,stock,this));
+			false,stock));
 	}
 }
 //---------------------------------------------------------------------------

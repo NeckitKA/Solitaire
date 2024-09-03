@@ -23,7 +23,7 @@ class Stack{
 
 	public:
 
-		Stack (int n, int x, int y, TForm* parentForm);
+		Stack (int n, int x, int y);
 
 		Stack(const Stack& other);
 

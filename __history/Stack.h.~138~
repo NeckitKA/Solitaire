@@ -40,7 +40,6 @@ class Stack{
 
 		void SetTopCardYPosition();
 
-        void Show();
 		virtual void __fastcall OnMouseDown(TObject *Sender,
 			TMouseButton Button, TShiftState Shift, int X, int Y);
 

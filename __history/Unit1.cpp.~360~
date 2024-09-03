@@ -733,8 +733,8 @@ void TForm1::CreateGameSnapshot() {
 void TForm1::GetGameSnapshot() {
 
 	DeleteStacksAndCards();
-	stock = new Stock(*stockGameSnapshots.back());
-	stock->Show();
+	Stock* stock1 = new Stock(*stockGameSnapshots.back());
+	stock1->Show();
 	waste = new Waste(*wasteGameSnapshots.back());
 	waste->Show();
 	for (int stackNum = 0; stackNum < 4; ++stackNum) {
@@ -747,7 +747,7 @@ void TForm1::GetGameSnapshot() {
 		tableauStacks.back()->Show();
 	}
 
-	for (Card* card : stock->cards) {
+	for (Card* card : stock1->cards) {
 		card->Show();
 	}
 

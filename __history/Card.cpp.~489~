@@ -14,9 +14,9 @@
 #pragma package(smart_init)
 //---------------------------------------------------------------------------
 
-Card::Card(int v, bool cardOpen, Stack* parentStack, TForm* parentForm) {
+Card::Card(int v, bool cardOpen, Stack* parentStack) {
 
-	SetParentForm(parentForm);
+	SetParentForm(Application->MainForm);
 	card = new TImage(GetParentForm());
 
 	SetParentStack(parentStack, false);

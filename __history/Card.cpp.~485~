@@ -63,7 +63,7 @@ Card::Card(const Card& other)
 
     card = new TImage(parentForm);
     card->Parent = parentForm;
-    card->Name = other.card->Name+"_Copy_"+IntToStr(n);
+    card->Name = "Card_" + IntToStr(value)+"_Copy_"+IntToStr(n);
     card->Width = other.card->Width;
     card->Height = other.card->Height;
     card->Center = other.card->Center;
@@ -73,13 +73,11 @@ Card::Card(const Card& other)
     card->Left = other.card->Left;
     card->Top = other.card->Top;
 
-	card->OnMouseDown = OnMouseDown;
-	card->OnMouseUp = OnMouseUp;
-	card->OnMouseMove = OnMouseMove;
+	card->OnMouseDown = other.card->OnMouseDown;
+    card->OnMouseUp = other.card->OnMouseUp;
+	card->OnMouseMove = other.card->OnMouseMove;
     card->Visible=false;
 }
-//---------------------------------------------------------------------------
-
 
 
 int Card::GetX() const{

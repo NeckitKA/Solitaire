@@ -77,7 +77,6 @@ __published:	// IDE-managed Components
 		  int X, int Y);
 	void __fastcall FormKeyDown(TObject *Sender, WORD &Key, TShiftState Shift);
 	void __fastcall Button3Click(TObject *Sender);
-	void __fastcall N7Click(TObject *Sender);
 
 private:	// User declarations
 
@@ -115,9 +114,7 @@ public:		// User declarations
 	void AddStacksAndCards();
 	void DeleteStacksAndCards();
 	void ManageTimer(bool anotherFormIsOpen = false);
-	void CreateGameSnapshot();
-	void GetGameSnapshot();
-	void ClearGameSnapshots();
+
 };
 //---------------------------------------------------------------------------
 extern PACKAGE TForm1 *Form1;

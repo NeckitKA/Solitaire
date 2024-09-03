@@ -1,22 +1,18 @@
 //---------------------------------------------------------------------------
 
-#ifndef StockH
-#define StockH
+#ifndef TableauH
+#define TableauH
 //---------------------------------------------------------------------------
-#include <vector>
 #include "Stack.h"
 //---------------------------------------------------------------------------
-class Stock: public Stack {
+class Tableau: public Stack {
 	public:
-		Stock(int n, int x, int y, TForm* parentForm);
-
-		Stock(const Stock& other);
-
+		Tableau(int n, int x, int y, TForm* parentForm);
 		void AddCard(Card* card);
+		void AddCardsAtStart(Card* card);
 		void RemoveCard();
-
-        void __fastcall OnMouseDown(TObject *Sender, TMouseButton Button, TShiftState Shift,
-		  int X, int Y);
+		void SetTopCardYPos();
+		void SetTopCardYPosAtStart();
 };
 //---------------------------------------------------------------------------
 #endif

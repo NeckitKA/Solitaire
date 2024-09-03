@@ -4893,7 +4893,7 @@ object Form1: TForm1
       object N7: TMenuItem
         Caption = #1054#1090#1084#1077#1085#1080#1090#1100
         Enabled = False
-        ShortCut = 16449
+        ShortCut = 16471
         OnClick = N7Click
       end
       object N8: TMenuItem

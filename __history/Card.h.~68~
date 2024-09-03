@@ -16,7 +16,7 @@ class Card{
 		Stack* parentStack;
 		int cardNumInStack=-1;
 		int value, xPos, yPos, startX, startY, top, newParentStackNum;
-		bool cardOpen = false, cardDragging = false, cardInStackArea = false;
+		bool cardOpen, cardDragging = false, cardInStackArea = false;
 
 		int GetX() const;
 		int GetY() const;
@@ -39,10 +39,6 @@ class Card{
 
 		Card(int v, bool cardOpen, Stack* parentStack, TForm* parentForm);
 
-		Card(const Card& other);
-
-        Card& operator=(const Card& other);
-
 		int GetTop() const;
 		int GetValue() const;
 		int GetStartX() const;
@@ -57,7 +53,6 @@ class Card{
 		void SetCardDragging(bool Dragging);
 		void SetCardPicture(int v, bool cardOpen);
 
-        void Show();
 		void BringToFront();
 
 		void __fastcall OnMouseDown(TObject *Sender, TMouseButton Button,
