@@ -1,0 +1,49 @@
+//---------------------------------------------------------------------------
+
+#ifndef CardsH
+#define CardsH
+//---------------------------------------------------------------------------
+#include <Vcl.Graphics.hpp>
+//#include <Vcl.Controls.hpp>
+//#include <Vcl.ExtCtrls.hpp>
+//---------------------------------------------------------------------------
+
+class Card{
+	private:
+
+		int X, Y;
+		TImage *card;
+
+	public:
+		bool isDragging = false;
+        int value;
+		Card(int v, int x, int y, TForm* parentForm);
+
+		int GetValue() const;
+		int GetX() const;
+		int GetY() const;
+
+        void SetCardPicture(int v, bool cardOpen);
+		void SetValue(int v);
+		void SetX(int x);
+		void SetY(int y);
+
+
+		void Show();
+		void Hide();
+        void BringToFront();
+		void SendToBack();
+
+
+		void __fastcall OnMouseDown(TObject *Sender, TMouseButton Button, TShiftState Shift,
+		  int X, int Y);
+		void __fastcall OnMouseUp(TObject *Sender, TMouseButton Button, TShiftState Shift,
+		  int X, int Y);
+		void __fastcall OnMouseMove(TObject *Sender, TShiftState Shift, int X, int Y);
+
+		~Card();
+
+};
+
+//---------------------------------------------------------------------------
+#endif

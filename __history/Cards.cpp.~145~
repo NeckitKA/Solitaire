@@ -1,0 +1,146 @@
+//---------------------------------------------------------------------------
+
+#pragma hdrstop
+
+#include "Cards.h"
+//---------------------------------------------------------------------------
+#pragma package(smart_init)
+//---------------------------------------------------------------------------
+
+Card::Card(int v, int x, int y, TForm* parentForm){
+
+	SetValue(v);
+	card = new TImage(parentForm);
+	SetX(x);
+	SetY(y);
+	SetCardPicture(value,true);
+
+
+	card->Parent = parentForm;
+	card->Name = "Card_" + IntToStr(GetValue());
+	card->Width = 100;
+	card->Height = 144;
+	Show();
+	card->Center=true;
+	card->Transparent=true;
+
+	card->OnMouseDown = OnMouseDown;
+	card->OnMouseUp = OnMouseUp;
+	card->OnMouseMove = OnMouseMove;
+}
+//---------------------------------------------------------------------------
+
+int Card::GetValue() const{
+	return value;
+}
+//---------------------------------------------------------------------------
+
+int Card::GetX() const {                                                         //не используется
+	return card ? card->Left : 0;
+}
+//---------------------------------------------------------------------------
+
+int Card::GetY() const {                                                          //не используется
+	return card ? card->Top : 0;
+}
+//---------------------------------------------------------------------------
+
+void Card::SetValue(int v){
+	value = v;
+}
+//---------------------------------------------------------------------------
+
+void Card::SetX(int x) {
+	if (card) {
+		X=x;
+		card->Left = X;
+	}
+}
+//---------------------------------------------------------------------------
+
+void Card::SetY(int y) {
+	if (card) {
+		Y = y;
+		card->Top = Y;
+	}
+}
+//---------------------------------------------------------------------------
+
+void Card::SetCardPicture(int v, bool cardOpen) {
+	if (card)
+	{
+		if (cardOpen) {
+			card->Picture->LoadFromFile("resources/images/deck/" + IntToStr(v) +".png");
+		}
+		else {
+			card->Picture->LoadFromFile("resources/images/deck/card_back.png");
+		}
+	}
+}
+//---------------------------------------------------------------------------
+
+void Card::Show() {
+	if (card) {
+		card->Visible = true;
+	}
+}
+//---------------------------------------------------------------------------
+
+void Card::Hide() {
+	if (card) {
+		card->Visible = false;
+    }
+}
+//---------------------------------------------------------------------------
+
+void Card::BringToFront(){
+	if (card) {
+		card->BringToFront();
+	}
+}
+//---------------------------------------------------------------------------
+
+void Card::SendToBack(){
+	if (card) {
+		card->SendToBack();
+	}
+}
+//---------------------------------------------------------------------------
+
+void __fastcall Card::OnMouseDown(TObject *Sender, TMouseButton Button, TShiftState Shift,
+		  int X, int Y) {
+	if (card && Button == mbLeft) {
+
+		SetCardPicture(value,true);
+		SetX(card->Left + X - (card->Width-2)/2);
+		SetY(card->Top + Y - (card->Height-2)/2);
+		isDragging = true;
+	}
+}
+//---------------------------------------------------------------------------
+
+void __fastcall Card::OnMouseUp(TObject *Sender, TMouseButton Button, TShiftState Shift,
+		  int X, int Y) {
+	if (card && Button == mbLeft) {
+		SetCardPicture(value,false);
+		SetX(X);
+		SetY(Y);
+		isDragging = false;
+    }
+}
+//---------------------------------------------------------------------------
+
+void __fastcall Card::OnMouseMove(TObject *Sender, TShiftState Shift, int X, int Y) {
+	if (isDragging) {
+		SetX(card->Left + (X - (card->Width-2)/2));
+		SetY(card->Top + (Y - (card->Height-2)/2));
+	}
+}
+//---------------------------------------------------------------------------
+
+Card::~Card() {
+	if (card) {
+		delete card;
+	}
+}
+//---------------------------------------------------------------------------

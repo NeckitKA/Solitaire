@@ -1,0 +1,39 @@
+//---------------------------------------------------------------------------
+
+#ifndef Unit5H
+#define Unit5H
+//---------------------------------------------------------------------------
+#include <System.Classes.hpp>
+#include <Vcl.Controls.hpp>
+#include <Vcl.StdCtrls.hpp>
+#include <Vcl.Forms.hpp>
+#include <fstream>
+//---------------------------------------------------------------------------
+class TForm5 : public TForm
+{
+__published:	// IDE-managed Components
+	TMemo *Memo1;
+	void __fastcall FormCreate(TObject *Sender);
+	void __fastcall Memo1MouseDown(TObject *Sender, TMouseButton Button, TShiftState Shift,
+		  int X, int Y);
+private:	// User declarations
+	void OutputUserManualToMemo(){
+		std::ifstream file("resources/texts/usermanual.txt");
+		if (file.is_open()) {
+			std::string line;
+			while (std::getline(file, line)) {
+				Memo1->Lines->Add(line.c_str());
+			}
+			file.close();
+		}
+		else {
+			ShowMessage("Could not open file");
+		}
+	}
+public:		// User declarations
+	__fastcall TForm5(TComponent* Owner);
+};
+//---------------------------------------------------------------------------
+extern PACKAGE TForm5 *Form5;
+//---------------------------------------------------------------------------
+#endif

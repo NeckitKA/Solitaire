@@ -1,0 +1,20 @@
+//---------------------------------------------------------------------------
+
+#ifndef FoundationStackH
+#define FoundationStackH
+//---------------------------------------------------------------------------
+#include "Stack.h"
+//---------------------------------------------------------------------------
+
+class FoundationStack : public Stack {
+
+
+	public:
+		FoundationStack(int x, int y, TForm* parentForm);
+
+		~FoundationStack()
+
+
+};
+
+#endif
