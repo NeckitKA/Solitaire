@@ -96,11 +96,11 @@ private:	// User declarations
 
 public:		// User declarations
 	__fastcall TForm1(TComponent* Owner);
-    float seconds = 0;
+	float seconds = 0;
 	bool firstMoveIsMade;
-    bool gameOpen = false;
+	bool gameOpen = false;
 	bool gameOver;
-    int n =0;
+	int n=0;
 	Stock* stock;
 	Waste* waste;
 	std::vector<Foundation*> foundationStacks;

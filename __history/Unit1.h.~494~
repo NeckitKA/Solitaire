@@ -77,6 +77,7 @@ __published:	// IDE-managed Components
 		  int X, int Y);
 	void __fastcall FormKeyDown(TObject *Sender, WORD &Key, TShiftState Shift);
 	void __fastcall Button3Click(TObject *Sender);
+	void __fastcall N7Click(TObject *Sender);
 
 private:	// User declarations
 
@@ -84,6 +85,8 @@ private:	// User declarations
 
 	bool image3MouseEnter = false;
 	bool pause = true;
+
+
 	void LogoutAccount();
 
 	void PlayOrStop();
@@ -97,16 +100,25 @@ public:		// User declarations
 	bool firstMoveIsMade;
     bool gameOpen = false;
 	bool gameOver;
+    int n =0;
 	Stock* stock;
 	Waste* waste;
 	std::vector<Foundation*> foundationStacks;
 	std::vector<Tableau*> tableauStacks;
+
+	std::vector<Stock*> stockGameSnapshots;
+	std::vector<Waste*> wasteGameSnapshots;
+	std::vector<std::vector<Foundation*>> foundationStacksGameSnapshots;
+	std::vector<std::vector<Tableau*>> tableauStacksGameSnapshots;
+
 	void ChangeCardsStacksByRightClick();
 	void PrepareFormForGame();
 	void AddStacksAndCards();
 	void DeleteStacksAndCards();
 	void ManageTimer(bool anotherFormIsOpen = false);
-
+	void CreateGameSnapshot();
+	void GetGameSnapshot();
+	void ClearGameSnapshots();
 };
 //---------------------------------------------------------------------------
 extern PACKAGE TForm1 *Form1;
