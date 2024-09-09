@@ -1,4 +1,4 @@
-//---------------------------------------------------------------------------
+ï»¿//---------------------------------------------------------------------------
 
 #include <vcl.h>
 #pragma hdrstop
@@ -292,20 +292,20 @@ void TForm1::PlayOrStop(){    //delete?
 //---------------------------------------------------------------------------
 
 void TForm1::ChangeCardsStacksByRightClick() {
-	bool nÑMFW = false; //noÑardsMoveFromWaste
-	bool nÑMFT0 = false; //noÑardsMoveFromTableau0
-	bool nÑMFT1 = false;
-	bool nÑMFT2 = false;
-	bool nÑMFT3 = false;
-	bool nÑMFT4 = false;
-	bool nÑMFT5 = false;
-	bool nÑMFT6 = false;
+	bool nï¿½MFW = false; //noï¿½ardsMoveFromWaste
+	bool nï¿½MFT0 = false; //noï¿½ardsMoveFromTableau0
+	bool nï¿½MFT1 = false;
+	bool nï¿½MFT2 = false;
+	bool nï¿½MFT3 = false;
+	bool nï¿½MFT4 = false;
+	bool nï¿½MFT5 = false;
+	bool nï¿½MFT6 = false;
 	bool AVP = false;    //additional verification passed
 	int counter = 0;
 	while (!AVP) {
 
 		if (!waste->cards.empty()) {
-			while (!waste->cards.empty() && !nÑMFW) {
+			while (!waste->cards.empty() && !nï¿½MFW) {
 				if ((!foundationStacks[0]->cards.empty() && (waste->cards.back()->GetValue()-4)==foundationStacks[0]->cards.back()->GetValue()) || ((waste->cards.back()->GetValue())<5 && foundationStacks[0]->cards.size()==0)) {
 					waste->cards.back()->SetParentStack(foundationStacks[0]);
 					foundationStacks[0]->AddCard(waste->cards.back());
@@ -334,12 +334,12 @@ void TForm1::ChangeCardsStacksByRightClick() {
 					waste->RemoveCard(waste->cards.size()-1);
 				}
 				else {
-					nÑMFW = true;
+					nï¿½MFW = true;
 				}
 			}
 		}
 		else {
-			nÑMFW = true;
+			nï¿½MFW = true;
 		}
 
 		Tableau* tableau0 = dynamic_cast<Tableau*>(tableauStacks[0]);
@@ -351,7 +351,7 @@ void TForm1::ChangeCardsStacksByRightClick() {
 		Tableau* tableau6 = dynamic_cast<Tableau*>(tableauStacks[6]);
 
 		if (!tableau0->cards.empty()) {
-			while (!tableau0->cards.empty() && !nÑMFT0) {
+			while (!tableau0->cards.empty() && !nï¿½MFT0) {
 				if ((!foundationStacks[0]->cards.empty() && (tableau0->cards.back()->GetValue()-4)==foundationStacks[0]->cards.back()->GetValue()) || ((tableau0->cards.back()->GetValue())<5 && foundationStacks[0]->cards.size()==0)) {
 					tableau0->cards.back()->SetParentStack(foundationStacks[0]);
 					foundationStacks[0]->AddCard(tableau0->cards.back());
@@ -372,9 +372,9 @@ void TForm1::ChangeCardsStacksByRightClick() {
 					foundationStacks[3]->AddCard(tableau0->cards.back());
 				}
 				else {
-					nÑMFT0 = true;
+					nï¿½MFT0 = true;
 				}
-				if (!nÑMFT0) {
+				if (!nï¿½MFT0) {
 					tableau0->cards.back()->BringToFront();
 					tableau0->RemoveCard();
 					if (!tableau0->cards.empty()) {
@@ -385,11 +385,11 @@ void TForm1::ChangeCardsStacksByRightClick() {
 			}
 		}
 		else {
-			nÑMFT0 = true;
+			nï¿½MFT0 = true;
 		}
 
 		if (!tableau1->cards.empty()) {
-			while (!tableau1->cards.empty() && !nÑMFT1) {
+			while (!tableau1->cards.empty() && !nï¿½MFT1) {
 				if ((!foundationStacks[0]->cards.empty() && (tableau1->cards.back()->GetValue()-4)==foundationStacks[0]->cards.back()->GetValue()) || ((tableau1->cards.back()->GetValue())<5 && foundationStacks[0]->cards.size()==0)) {
 					tableau1->cards.back()->SetParentStack(foundationStacks[0]);
 					foundationStacks[0]->AddCard(tableau1->cards.back());
@@ -410,9 +410,9 @@ void TForm1::ChangeCardsStacksByRightClick() {
 					foundationStacks[3]->AddCard(tableau1->cards.back());
 				}
 				else {
-					nÑMFT1 = true;
+					nï¿½MFT1 = true;
 				}
-				if (!nÑMFT1) {
+				if (!nï¿½MFT1) {
 					tableau1->cards.back()->BringToFront();
 					tableau1->RemoveCard();
 					if (!tableau1->cards.empty()) {
@@ -423,11 +423,11 @@ void TForm1::ChangeCardsStacksByRightClick() {
 			}
 		}
 		else {
-			nÑMFT1 = true;
+			nï¿½MFT1 = true;
 		}
 
 		if (!tableau2->cards.empty()) {
-			while (!tableau2->cards.empty() && !nÑMFT2) {
+			while (!tableau2->cards.empty() && !nï¿½MFT2) {
 				if ((!foundationStacks[0]->cards.empty() && (tableau2->cards.back()->GetValue()-4)==foundationStacks[0]->cards.back()->GetValue()) || ((tableau2->cards.back()->GetValue())<5 && foundationStacks[0]->cards.size()==0)) {
 					tableau2->cards.back()->SetParentStack(foundationStacks[0]);
 					foundationStacks[0]->AddCard(tableau2->cards.back());
@@ -448,9 +448,9 @@ void TForm1::ChangeCardsStacksByRightClick() {
 					foundationStacks[3]->AddCard(tableau2->cards.back());
 				}
 				else {
-					nÑMFT2 = true;
+					nï¿½MFT2 = true;
 				}
-				if (!nÑMFT2) {
+				if (!nï¿½MFT2) {
 					tableau2->cards.back()->BringToFront();
 					tableau2->RemoveCard();
 					if (!tableau2->cards.empty()) {
@@ -461,11 +461,11 @@ void TForm1::ChangeCardsStacksByRightClick() {
 			}
 		}
 		else {
-			nÑMFT2 = true;
+			nï¿½MFT2 = true;
 		}
 
 		if (!tableau3->cards.empty()) {
-			while (!tableau3->cards.empty() && !nÑMFT3) {
+			while (!tableau3->cards.empty() && !nï¿½MFT3) {
 				if ((!foundationStacks[0]->cards.empty() && (tableau3->cards.back()->GetValue()-4)==foundationStacks[0]->cards.back()->GetValue()) || ((tableau3->cards.back()->GetValue())<5 && foundationStacks[0]->cards.size()==0)) {
 					tableau3->cards.back()->SetParentStack(foundationStacks[0]);
 					foundationStacks[0]->AddCard(tableau3->cards.back());
@@ -486,9 +486,9 @@ void TForm1::ChangeCardsStacksByRightClick() {
 					foundationStacks[3]->AddCard(tableau3->cards.back());
 				}
 				else {
-					nÑMFT3 = true;
+					nï¿½MFT3 = true;
 				}
-				if (!nÑMFT3) {
+				if (!nï¿½MFT3) {
 					tableau3->cards.back()->BringToFront();
 					tableau3->RemoveCard();
 					if (!tableau3->cards.empty()) {
@@ -499,11 +499,11 @@ void TForm1::ChangeCardsStacksByRightClick() {
 			}
 		}
 		else {
-			nÑMFT3 = true;
+			nï¿½MFT3 = true;
 		}
 
 		if (!tableau4->cards.empty()) {
-			while (!tableau4->cards.empty() && !nÑMFT4) {
+			while (!tableau4->cards.empty() && !nï¿½MFT4) {
 				if ((!foundationStacks[0]->cards.empty() && (tableau4->cards.back()->GetValue()-4)==foundationStacks[0]->cards.back()->GetValue()) || ((tableau4->cards.back()->GetValue())<5 && foundationStacks[0]->cards.size()==0)) {
 					tableau4->cards.back()->SetParentStack(foundationStacks[0]);
 					foundationStacks[0]->AddCard(tableau4->cards.back());
@@ -524,9 +524,9 @@ void TForm1::ChangeCardsStacksByRightClick() {
 					foundationStacks[3]->AddCard(tableau4->cards.back());
 				}
 				else {
-					nÑMFT4 = true;
+					nï¿½MFT4 = true;
 				}
-				if (!nÑMFT4) {
+				if (!nï¿½MFT4) {
 					tableau4->cards.back()->BringToFront();
 					tableau4->RemoveCard();
 					if (!tableau4->cards.empty()) {
@@ -537,10 +537,10 @@ void TForm1::ChangeCardsStacksByRightClick() {
 			}
 		}
 		else {
-			nÑMFT4 = true;
+			nï¿½MFT4 = true;
 		}
 		if (!tableau5->cards.empty()) {
-			while (!tableau5->cards.empty() && !nÑMFT5) {
+			while (!tableau5->cards.empty() && !nï¿½MFT5) {
 				if ((!foundationStacks[0]->cards.empty() && (tableau5->cards.back()->GetValue()-4)==foundationStacks[0]->cards.back()->GetValue()) || ((tableau5->cards.back()->GetValue())<5 && foundationStacks[0]->cards.size()==0)) {
 					tableau5->cards.back()->SetParentStack(foundationStacks[0]);
 					foundationStacks[0]->AddCard(tableau5->cards.back());
@@ -561,9 +561,9 @@ void TForm1::ChangeCardsStacksByRightClick() {
 					foundationStacks[3]->AddCard(tableau5->cards.back());
 				}
 				else {
-					nÑMFT5 = true;
+					nï¿½MFT5 = true;
 				}
-				if (!nÑMFT5) {
+				if (!nï¿½MFT5) {
 					tableau5->cards.back()->BringToFront();
 					tableau5->RemoveCard();
 					if (!tableau5->cards.empty()) {
@@ -574,11 +574,11 @@ void TForm1::ChangeCardsStacksByRightClick() {
 			}
 		}
 		else {
-			nÑMFT5 = true;
+			nï¿½MFT5 = true;
 		}
 
 		if (!tableau6->cards.empty()) {
-			while (!tableau6->cards.empty() && !nÑMFT6) {
+			while (!tableau6->cards.empty() && !nï¿½MFT6) {
 				if ((!foundationStacks[0]->cards.empty() && (tableau6->cards.back()->GetValue()-4)==foundationStacks[0]->cards.back()->GetValue()) || ((tableau6->cards.back()->GetValue())<5 && foundationStacks[0]->cards.size()==0)) {
 					tableau6->cards.back()->SetParentStack(foundationStacks[0]);
 					foundationStacks[0]->AddCard(tableau6->cards.back());
@@ -599,9 +599,9 @@ void TForm1::ChangeCardsStacksByRightClick() {
 					foundationStacks[3]->AddCard(tableau6->cards.back());
 				}
 				else {
-					nÑMFT6 = true;
+					nï¿½MFT6 = true;
 				}
-				if (!nÑMFT6) {
+				if (!nï¿½MFT6) {
 					tableau6->cards.back()->BringToFront();
 					tableau6->RemoveCard();
 					if (!tableau6->cards.empty()) {
@@ -612,18 +612,18 @@ void TForm1::ChangeCardsStacksByRightClick() {
 			}
 		}
 		else {
-			nÑMFT6 = true;
+			nï¿½MFT6 = true;
 		}
 
-		if (nÑMFW && nÑMFT0 && nÑMFT1 && nÑMFT2 && nÑMFT3 && nÑMFT4 && nÑMFT5 && nÑMFT6) {
-			nÑMFW = false;
-			nÑMFT0 = false;
-			nÑMFT1 = false;
-			nÑMFT2 = false;
-			nÑMFT3 = false;
-			nÑMFT4 = false;
-			nÑMFT5 = false;
-			nÑMFT6 = false;
+		if (nï¿½MFW && nï¿½MFT0 && nï¿½MFT1 && nï¿½MFT2 && nï¿½MFT3 && nï¿½MFT4 && nï¿½MFT5 && nï¿½MFT6) {
+			nï¿½MFW = false;
+			nï¿½MFT0 = false;
+			nï¿½MFT1 = false;
+			nï¿½MFT2 = false;
+			nï¿½MFT3 = false;
+			nï¿½MFT4 = false;
+			nï¿½MFT5 = false;
+			nï¿½MFT6 = false;
 			counter++;
 			if (counter==19) {
                 AVP=true;
@@ -710,13 +710,13 @@ void __fastcall TForm1::Button3Click(TObject *Sender)
 //---------------------------------------------------------------------------
 
 void TForm1::CreateGameSnapshot() {
-	Stock* stockSnapshot = new Stock(*stock);
 	Waste* wasteSnapshot = new Waste(*waste);
+	Stock* stockSnapshot = new Stock(*stock);
+	wasteGameSnapshots.push_back(wasteSnapshot);
+	stockGameSnapshots.push_back(stockSnapshot);
 	std::vector<Foundation*> foundationStacksSnapshot;
 	std::vector<Tableau*> tableauStacksSnapshot;
 
-	stockGameSnapshots.push_back(stockSnapshot);
-	wasteGameSnapshots.push_back(wasteSnapshot);
 
 	for (Foundation* foundation : foundationStacks) {
 		foundationStacksSnapshot.push_back(new Foundation(*foundation));
@@ -731,12 +731,12 @@ void TForm1::CreateGameSnapshot() {
 //---------------------------------------------------------------------------
 
 void TForm1::GetGameSnapshot() {
-
 	DeleteStacksAndCards();
 	stock = new Stock(*stockGameSnapshots.back());
 	stock->Show();
 	waste = new Waste(*wasteGameSnapshots.back());
 	waste->Show();
+
 	for (int stackNum = 0; stackNum < 4; ++stackNum) {
 		foundationStacks.push_back(new Foundation(*foundationStacksGameSnapshots.back()[stackNum]));
 		foundationStacks.back()->Show();
@@ -747,9 +747,11 @@ void TForm1::GetGameSnapshot() {
 		tableauStacks.back()->Show();
 	}
 
+
 	for (Card* card : stock->cards) {
 		card->Show();
 	}
+
 
 	for (Card* card : waste->cards) {
 		card->Show();
@@ -761,16 +763,19 @@ void TForm1::GetGameSnapshot() {
 		}
 	}
 
+
 	for (int stackNum = 0; stackNum < 7; ++stackNum) {
 		for (Card* card : tableauStacks[stackNum]->cards) {
 			card->Show();
 		}
 	}
 
+
+
 	delete stockGameSnapshots.back();
 	stockGameSnapshots.pop_back();
 	delete wasteGameSnapshots.back();
-    wasteGameSnapshots.pop_back();
+	wasteGameSnapshots.pop_back();
 	for (Foundation* foundation : foundationStacksGameSnapshots.back()) {
 		delete foundation;
 	}
@@ -780,6 +785,8 @@ void TForm1::GetGameSnapshot() {
 		delete tableau;
 	}
 	tableauStacksGameSnapshots.pop_back();
+
+
 }
 //---------------------------------------------------------------------------
 
@@ -814,6 +821,7 @@ void __fastcall TForm1::N7Click(TObject *Sender)
 	GetGameSnapshot();
 }
 //---------------------------------------------------------------------------
+
 
 
 

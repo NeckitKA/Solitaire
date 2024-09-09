@@ -38,7 +38,8 @@ class Stack{
 		TImage* GetTImage() const;
 		TForm* GetParentForm() const;
 
-		void SetTopCardYPosition();
+		virtual void SetTopCardYPosition(bool newStack = false);
+        virtual void AddCard(Card* card);
 
         void Show();
 		virtual void __fastcall OnMouseDown(TObject *Sender,

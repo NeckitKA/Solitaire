@@ -12,8 +12,19 @@ Tableau::Tableau(int n, int x, int y, TForm* parentForm)
 }
 //---------------------------------------------------------------------------
 
-void  Tableau::SetTopCardYPos() {
-		int cardOpenCounter=0;
+
+void  Tableau::SetTopCardYPosition(bool newStack) {
+	int cardOpenCounter=0;
+	if (newStack) {
+
+		if (cards.back()->GetCardOpen()) {
+			topCardYPosition = topCardYPosition + 7;
+		}
+		else {
+			topCardYPosition = topCardYPosition + 7 + 23;
+        }
+	}
+	else {
 		for (int cardNum = cards.size() - 1; cardNum >= 0; --cardNum) {
 			if (!cards[cardNum]->GetCardOpen()) {
 				break;
@@ -21,7 +32,9 @@ void  Tableau::SetTopCardYPos() {
 			cardOpenCounter++;
 		}
 		topCardYPosition = cards.size()*7 + Y + 1 + 23*cardOpenCounter;
+	}
 }
+
 //---------------------------------------------------------------------------
 
 void  Tableau::SetTopCardYPosAtStart() {
@@ -31,7 +44,7 @@ void  Tableau::SetTopCardYPosAtStart() {
 
 void Tableau::AddCard(Card* card) {
 	cards.push_back(card);
-	SetTopCardYPos();
+	SetTopCardYPosition();
 }
 //---------------------------------------------------------------------------
 
@@ -43,6 +56,6 @@ void Tableau::AddCardsAtStart(Card* card){
 
 void Tableau::RemoveCard() {
 	cards.pop_back();
-    SetTopCardYPos();
+    SetTopCardYPosition();
 }
 //---------------------------------------------------------------------------

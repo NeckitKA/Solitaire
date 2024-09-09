@@ -20,6 +20,7 @@ Stock::Stock(const Stock& other)
     GetTImage()->OnMouseDown = OnMouseDown;
 }
 //---------------------------------------------------------------------------
+//---------------------------------------------------------------------------
 
 void Stock::AddCard(Card* card) {
 	cards.push_back(card);

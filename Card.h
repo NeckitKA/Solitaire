@@ -13,9 +13,9 @@ class Card{
 
 		TImage *card;
 		TForm * parentForm;
-		Stack* parentStack;
+
 		int cardNumInStack=-1;
-		int value, xPos, yPos, startX, startY, top, newParentStackNum;
+		int value, xPos, yPos, startX, startY, top, newParentStackNum=-1;
 		bool cardOpen = false, cardDragging = false, cardInStackArea = false;
 
 		int GetX() const;
@@ -36,7 +36,7 @@ class Card{
 		void SetCardInStackArea(bool InStackArea);
 
 	public:
-
+        Stack* parentStack;
 		Card(int v, bool cardOpen, Stack* parentStack, TForm* parentForm);
 
 		Card(const Card& other);
@@ -53,7 +53,7 @@ class Card{
 		void SetX(int x);
 		void SetY(int y);
 		void SetCardOpen(bool open);
-		void SetParentStack(Stack* stack, bool manageTimer = true);
+		void SetParentStack(Stack* stack, bool manageTimer = true, bool newStack = false);
 		void SetCardDragging(bool Dragging);
 		void SetCardPicture(int v, bool cardOpen);
 
