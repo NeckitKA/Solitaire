@@ -377,6 +377,7 @@
   c:\program\ files\ (x86)\embarcadero\studio\23.0\include\dinkumware64\xloctime \
   c:\program\ files\ (x86)\embarcadero\studio\23.0\include\dinkumware64\list \
   D:\win10\My\istb\1\ курс\2\ семестр\C++\курсач\Meme\ solitaire/Unit4.h \
+  c:\program\ files\ (x86)\embarcadero\studio\23.0\include\windows\vcl\Vcl.Grids.hpp \
   D:\win10\My\istb\1\ курс\2\ семестр\C++\курсач\Meme\ solitaire/Unit5.h \
   D:\win10\My\istb\1\ курс\2\ семестр\C++\курсач\Meme\ solitaire/Unit6.h \
   D:\win10\My\istb\1\ курс\2\ семестр\C++\курсач\Meme\ solitaire/Unit7.h

@@ -21,7 +21,6 @@ void Foundation::AddCard(Card* card) {
 	  form->foundationStacks[1]->cards.size()==13 &&
 	  form->foundationStacks[2]->cards.size()==13 &&
 	  form->foundationStacks[3]->cards.size()==13) {
-
         form->gameOver=true;
 		form->ManageTimer();
 	}

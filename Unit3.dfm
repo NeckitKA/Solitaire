@@ -35,7 +35,7 @@ object Form3: TForm3
   object Label3: TLabel
     Left = 133
     Top = 145
-    Width = 43
+    Width = 3
     Height = 15
     Color = clBtnFace
     Font.Charset = DEFAULT_CHARSET

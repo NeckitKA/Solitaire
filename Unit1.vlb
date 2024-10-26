@@ -34,9 +34,6 @@ Coordinates=348,1,81,36
 [N16]
 Coordinates=153,269,40,36
 
-[N9]
-Coordinates=104,269,40,36
-
 [Button1]
 Coordinates=276,10,59,58
 
@@ -75,5 +72,5 @@ Coordinates=213,10,53,58
 Coordinates=348,221,40,36
 
 []
-Coordinates=467,1,91,36
+Coordinates=104,269,40,36
 

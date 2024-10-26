@@ -19,7 +19,7 @@
 #include  "Waste.h"
 #include  "Foundation.h"
 #include  "Tableau.h"
-
+#include <string>
 //#include "Stack.h"
 //#include "Card.h"
 //---------------------------------------------------------------------------
@@ -35,7 +35,6 @@ __published:	// IDE-managed Components
 	TMenuItem *N6;
 	TMenuItem *N7;
 	TMenuItem *N8;
-	TMenuItem *N9;
 	TMenuItem *N10;
 	TMenuItem *N11;
 	TMenuItem *N12;
@@ -51,7 +50,7 @@ __published:	// IDE-managed Components
 	TImage *Image2;
 	TImage *Image3;
 	TImage *Image4;
-	TButton *Button3;
+	TMenuItem *N9;
 
 	void __fastcall N4Click(TObject *Sender);
 	void __fastcall N9Click(TObject *Sender);
@@ -76,7 +75,6 @@ __published:	// IDE-managed Components
 	void __fastcall FormMouseUp(TObject *Sender, TMouseButton Button, TShiftState Shift,
 		  int X, int Y);
 	void __fastcall FormKeyDown(TObject *Sender, WORD &Key, TShiftState Shift);
-	void __fastcall Button3Click(TObject *Sender);
 	void __fastcall N7Click(TObject *Sender);
 
 private:	// User declarations
@@ -92,6 +90,7 @@ private:	// User declarations
 	void PlayOrStop();
 	void ProcessModalFormResultForForm3(TModalResult result);
 	void RegisterOrOpenStatistics (bool N10Enabled,  TForm* Form3, TForm* Form4);
+	void WriteStatistics();
 
 
 public:		// User declarations
@@ -101,6 +100,8 @@ public:		// User declarations
 	bool gameOpen = false;
 	bool gameOver;
 	int n=0;
+    int counter=0;
+	String user;
 
 	Stock* stock;
 	Waste* waste;
@@ -113,6 +114,7 @@ public:		// User declarations
 	std::vector<std::vector<Tableau*>> tableauStacksGameSnapshots;
 
 	void ChangeCardsStacksByRightClick();
+	void CountGame(String username);
 	void PrepareFormForGame();
 	void AddStacksAndCards();
 	void DeleteStacksAndCards();

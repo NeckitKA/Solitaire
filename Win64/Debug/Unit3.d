@@ -361,4 +361,17 @@
   c:\program\ files\ (x86)\embarcadero\studio\23.0\include\dinkumware64\xlocmes \
   c:\program\ files\ (x86)\embarcadero\studio\23.0\include\dinkumware64\xlocmon \
   c:\program\ files\ (x86)\embarcadero\studio\23.0\include\dinkumware64\xloctime \
-  c:\program\ files\ (x86)\embarcadero\studio\23.0\include\dinkumware64\list
+  c:\program\ files\ (x86)\embarcadero\studio\23.0\include\dinkumware64\list \
+  D:\win10\My\istb\1\ курс\2\ семестр\C++\курсач\Meme\ solitaire/Unit1.h \
+  c:\program\ files\ (x86)\embarcadero\studio\23.0\include\windows\vcl\Vcl.Buttons.hpp \
+  c:\program\ files\ (x86)\embarcadero\studio\23.0\include\windows\vcl\Vcl.Imaging.pngimage.hpp \
+  c:\program\ files\ (x86)\embarcadero\studio\23.0\include\windows\rtl\System.ZLib.hpp \
+  c:\program\ files\ (x86)\embarcadero\studio\23.0\include\windows\vcl\Vcl.Imaging.pnglang.hpp \
+  c:\program\ files\ (x86)\embarcadero\studio\23.0\include\dinkumware64\vector \
+  c:\program\ files\ (x86)\embarcadero\studio\23.0\include\dinkumware64\random \
+  D:\win10\My\istb\1\ курс\2\ семестр\C++\курсач\Meme\ solitaire/Stock.h \
+  D:\win10\My\istb\1\ курс\2\ семестр\C++\курсач\Meme\ solitaire/Stack.h \
+  D:\win10\My\istb\1\ курс\2\ семестр\C++\курсач\Meme\ solitaire/Card.h \
+  D:\win10\My\istb\1\ курс\2\ семестр\C++\курсач\Meme\ solitaire/Waste.h \
+  D:\win10\My\istb\1\ курс\2\ семестр\C++\курсач\Meme\ solitaire/Foundation.h \
+  D:\win10\My\istb\1\ курс\2\ семестр\C++\курсач\Meme\ solitaire/Tableau.h

@@ -4,6 +4,7 @@
 #pragma hdrstop
 
 #include "Unit3.h"
+#include "Unit1.h"
 //---------------------------------------------------------------------------
 #pragma package(smart_init)
 #pragma resource "*.dfm"
@@ -124,6 +125,8 @@ void TForm3::GetUserData(String username, String password){
 						Label3->Visible=true;
 						Label3->Caption="Вход выполнен";
 						credentials.close();
+						TForm1* mainForm = dynamic_cast<TForm1*>(Application->MainForm);
+						mainForm->user=username;
 						loginCompleted();
 					}
 				}
@@ -154,10 +157,15 @@ void TForm3::GetUserData(String username, String password){
 void TForm3::SaveUserData(UnicodeString username, UnicodeString password){
 	if (findUser(username)==0) {
 		std::ofstream credentials("data/Users/credentials.txt",ios::app);
-		if (credentials.is_open()) {
+		std::ofstream stats("data/Users/stats.txt",ios::app);
+		if (credentials.is_open() && stats.is_open()) {
 			if (!username.IsEmpty() && !password.IsEmpty()) {
 				credentials << "u:" << AnsiString(username).c_str() << ";p:" << AnsiString(password).c_str() << ";\n";
 				credentials.close();
+				stats<<"u:" << AnsiString(username).c_str() <<  ";c:0;w:0;\n";
+				stats.close();
+                TForm1* mainForm = dynamic_cast<TForm1*>(Application->MainForm);
+				mainForm->user=username;
 				loginCompleted();
 			}
 			else{
@@ -167,7 +175,7 @@ void TForm3::SaveUserData(UnicodeString username, UnicodeString password){
 		}
 		else {
 			Label3->Visible=true;
-			Label3->Caption="Файл credentials.txt недоступен";
+			Label3->Caption="Файл credentials.txt или stats.txt недоступен";
 		}
 	}
 	else if (findUser(username)==2) {

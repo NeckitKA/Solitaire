@@ -1,0 +1,49 @@
+//---------------------------------------------------------------------------
+
+#include <vcl.h>
+#pragma hdrstop
+
+#include "Unit4.h"
+#include "Unit1.h"
+//---------------------------------------------------------------------------
+#pragma package(smart_init)
+#pragma resource "*.dfm"
+TForm4 *Form4;
+//---------------------------------------------------------------------------
+__fastcall TForm4::TForm4(TComponent* Owner)
+	: TForm(Owner)
+{
+}
+//---------------------------------------------------------------------------
+
+
+void TForm4::GetUserStats(String username){
+	std::ifstream stats("data/Users/stats.txt");
+
+	if (!username.IsEmpty()) {
+		std::string searchStr = "u:" + std::string(AnsiString(username).c_str()) + ";";
+		std::string line;
+
+		while (std::getline(stats, line)) {
+			if (line.find(searchStr) != std::string::npos) {
+				std::size_t cPos = line.find("c:");
+				std::size_t wPos = line.find("w:");
+				int cValue = std::stoi(line.substr(cPos + 2, line.find(";", cPos) - (cPos + 2)));
+				int wValue = std::stoi(line.substr(wPos + 2, line.find(";", wPos) - (wPos + 2)));
+				Label1->Caption="Количество игр: " + IntToStr(cValue);
+				Label2->Caption="Выиграно: " + IntToStr(wValue);
+				break;
+			}
+		}
+		stats.close();
+	}
+}
+//---------------------------------------------------------------------------
+
+void __fastcall TForm4::FormShow(TObject *Sender)
+{
+	TForm1* mainform = dynamic_cast<TForm1*>(Application->MainForm);
+	GetUserStats(mainform->user);
+}
+//---------------------------------------------------------------------------
+

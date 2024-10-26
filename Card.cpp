@@ -180,8 +180,12 @@ void Card::SetParentStack(Stack* stack, bool manageTimer, bool newStack) {
 	TForm1* form = dynamic_cast<TForm1*>(GetParentForm());
 	if (manageTimer) {
 		form->n=form->n+1;
-		form->CreateGameSnapshot();
-		form->firstMoveIsMade = true;
+		//form->CreateGameSnapshot();
+		form->firstMoveIsMade=true;
+		if (form->counter==0) {
+			form->CountGame(form->user);
+			form->counter++;
+		}
 		form->ManageTimer();
 	}
 	parentStack = stack;
@@ -197,9 +201,9 @@ void Card::SetParentStack(Stack* stack, bool manageTimer, bool newStack) {
 	if (parentStack->GetStackNumber()>5) {
         SetCardNumInStack(stack->cards.size());
 		SetStartX(stack->GetTopCardXPosition());
-		SetStartY(stack->GetTopCardYPosition()-7*(stack->cards.size()+1));
+		SetStartY(stack->GetTopCardYPosition());              //-7*(stack->cards.size()+1)
 		SetX(stack->GetTopCardXPosition());
-		SetY(stack->GetTopCardYPosition()-7*(stack->cards.size()+1));
+		SetY(stack->GetTopCardYPosition());                     //-7*(stack->cards.size()+1)
 	}
 	else {
         SetCardNumInStack(stack->cards.size());
